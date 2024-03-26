@@ -1,8 +1,8 @@
 import { Card } from "../Card";
 import styles from "./styles.module.css";
-import { FolderCard } from "../../pages/Folder/components/FolderCard";
+import { FolderCard } from "../../pages/folder/components/FolderCard";
 import { Folder, Link } from "../../types";
-import { useSearch } from "@hooks/useSearch";
+import { useSearch } from "@/hooks/useSearch";
 
 interface Props {
   links: Link[];

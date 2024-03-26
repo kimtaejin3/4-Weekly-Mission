@@ -1,11 +1,12 @@
 import { useState, useCallback, useRef } from "react";
 import SearchIcon from "@assets/Search.png";
 import styles from "./styles.module.css";
-import { debounce } from "utils/debounce";
-import { useSearch } from "@hooks/useSearch";
+import { debounce } from "@/utils/debounce";
+import { useSearch } from "@/hooks/useSearch";
 import { MdCancel } from "react-icons/md";
+import Image from "next/image";
 
-export default function SearchInput() {
+export function SearchInput() {
   const [inputQuery, setInputQuery] = useState("");
   const search = useSearch();
   const ref = useRef(null);
@@ -29,7 +30,7 @@ export default function SearchInput() {
 
   return (
     <div className={styles["searchBox"]}>
-      <img style={{ flexShrink: 0 }} src={SearchIcon} alt="searchIcon" />
+      <Image style={{ flexShrink: 0 }} src={SearchIcon} alt="searchIcon" />
       <input
         ref={ref}
         type="text"
