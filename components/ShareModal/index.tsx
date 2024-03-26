@@ -4,6 +4,7 @@ import styles from "./styles.module.css";
 import KakaoIcon from "../../assets/kakaoIcon.svg";
 import facebookIcon from "../../assets/facebookIcon.svg";
 import linkIcon from "../../assets/linkIcon.svg";
+import Image from "next/image";
 
 declare global {
   interface Window {
@@ -39,7 +40,7 @@ export const ShareModal = forwardRef(
     const kakaoShare = () => {
       console.log(`http://${window.location.host}/Linkbrary.png`);
       const { Kakao } = window;
-
+      if (!Kakao) return;
       Kakao.Share.sendDefault({
         objectType: "feed",
         content: {
@@ -73,7 +74,7 @@ export const ShareModal = forwardRef(
           <ul className={styles.icons}>
             <li className={styles.icon}>
               <button onClick={kakaoShare}>
-                <img src={KakaoIcon} alt="kakaoIcon" />
+                <Image src={KakaoIcon} alt="kakaoIcon" />
                 <p className={styles.iconText}>카카오톡</p>
               </button>
             </li>
@@ -85,7 +86,7 @@ export const ShareModal = forwardRef(
                 }/shared?user=${1}&folderId=${441}`}
                 rel="noreferrer"
               >
-                <img src={facebookIcon} alt="facebookIcon" />
+                <Image src={facebookIcon} alt="facebookIcon" />
                 <p className={styles.iconText}>페이스북</p>
               </a>
             </li>
@@ -97,7 +98,7 @@ export const ShareModal = forwardRef(
                   )
                 }
               >
-                <img src={linkIcon} alt="linkIcon" />
+                <Image src={linkIcon} alt="linkIcon" />
                 <p className={styles.iconText}>링크 복사</p>
               </button>
             </li>

@@ -1,17 +1,12 @@
 import styles from "./styles.module.css";
-import { getTimeAgo, formatDate } from "../../../../utils/time";
-import noImg from "../../../../assets/noImg.png";
-import starImg from "../../../../assets/star.png";
-import kebabImg from "../../../../assets/kebab.png";
+import { getTimeAgo, formatDate } from "@/utils/time";
+import noImg from "@/assets/noImg.png";
+import starImg from "@/assets/star.png";
+import kebabImg from "@/assets/kebab.png";
 import { useState } from "react";
-import {
-  ModalPortal,
-  PopOver,
-  DeleteModal,
-  AddLinkModal,
-} from "../../../../components";
-import { useModal } from "../../../../hooks/useModal";
-import { Link, Folder } from "../../../../types";
+import { ModalPortal, PopOver, DeleteModal, AddLinkModal } from "@/components";
+import { useModal } from "@/hooks/useModal";
+import { Link, Folder } from "@/types";
 import Image from "next/image";
 
 interface Props {
@@ -80,7 +75,7 @@ export function FolderCard({ link, folders }: Props) {
         />
         <div className={styles.link}>
           <div className={styles["link-cover"]}>
-            <img src={link[imageSource] || noImg} alt="cardCover" />:
+            <img src={link[imageSource] || noImg} alt="cardCover" />
           </div>
           <button className={styles.likeBtn}>
             <Image src={starImg} alt="likeBtn" />
