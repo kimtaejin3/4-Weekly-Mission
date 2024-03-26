@@ -91,7 +91,7 @@ export function FolderCard({ link, folders }: Props) {
                 {getTimeAgo(link[createdAt] as string)}
               </p>
               <button onClick={handleMoreBtn} className={styles.moreBtn}>
-                <img id="moreBtn" src={kebabImg} alt="kebabImg" />
+                <Image id="moreBtn" src={kebabImg} alt="kebabImg" />
               </button>
             </div>
             <h2 className={styles["link-title"]}>
