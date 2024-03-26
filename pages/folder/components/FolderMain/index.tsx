@@ -6,6 +6,7 @@ import { getFolderList, getLinks } from "@/api/api";
 import { useSearch } from "@/hooks/useSearch";
 import { useAsync } from "@/hooks/useAsync";
 import { Folder, Link } from "@/types";
+import useIntersectionObserver from "@/hooks/useIntersectionObserver";
 
 export default function FolderMain() {
   const [folders, setFolders] = useState([] as Folder[]);
@@ -17,7 +18,12 @@ export default function FolderMain() {
   const [linksLoading, linksError, getLinksAsync] = useAsync(getLinks);
   const search = useSearch();
   const [style, setStyle] = useState({});
-  const flag = useRef(false);
+  // const flag = useRef(false);
+  const { isVisible: headerVisible, ref: headerBoundaryRef } =
+    useIntersectionObserver();
+
+  const { isVisible: footerVisible, ref: footerBoundaryRef } =
+    useIntersectionObserver();
 
   const handleSelectedFolder = ({ name, id }: { name: string; id: number }) => {
     setSelectedName(name);
@@ -46,32 +52,31 @@ export default function FolderMain() {
   }, [selectedId]);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries, observer) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) {
-            setStyle({
-              position: "fixed",
-              bottom: 0,
-              left: 0,
-              right: 0,
-              zIndex: 9999,
-            });
-          } else {
-            setStyle({});
-          }
-        });
-      },
-      {
-        root: null,
-        rootMargin: "0px",
-        threshold: 1,
-      }
-    );
+    console.log("headerVisible:", headerVisible);
+  }, [headerVisible]);
 
-    observer.observe(document.querySelector("#mainEntry") as HTMLElement);
-    observer.observe(document.querySelector("#mainExit") as HTMLElement);
-  }, []);
+  //           setStyle({
+  //             position: "fixed",
+  //             bottom: 0,
+  //             left: 0,
+  //             right: 0,
+  //             zIndex: 9999,
+  //           });
+  //         } else {
+  //           setStyle({});
+  //         }
+  //       });
+  //     },
+  //     {
+  //       root: null,
+  //       rootMargin: "0px",
+  //       threshold: 1,
+  //     }
+  //   );
+
+  //   observer.observe(document.querySelector("#mainEntry") as HTMLElement);
+  //   observer.observe(document.querySelector("#mainExit") as HTMLElement);
+  // }, []);
 
   return (
     <main>
@@ -79,10 +84,23 @@ export default function FolderMain() {
         <div>네트워크 오류입니다. 인터넷 연결상태를 확인하세요</div>
       )}
       <div style={{ backgroundColor: "red", height: "180px" }}>
-        <FolderAddLinkArea style={style} folders={folders} />
+        <FolderAddLinkArea
+          style={
+            !headerVisible && !footerVisible
+              ? {
+                  position: "fixed",
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  zIndex: 9999,
+                }
+              : {}
+          }
+          folders={folders}
+        />
       </div>
       <div id="mainContainer" className={styles.mainContainer}>
-        <div id="mainEntry"></div>
+        <div ref={headerBoundaryRef} id="headerBoundary"></div>
         <SearchInput />
         {search.query[0] && (
           <p className={styles.searchResult}>
@@ -107,7 +125,7 @@ export default function FolderMain() {
           <div>로딩중</div>
         )}
       </div>
-      <div id="mainExit"></div>
+      <div ref={footerBoundaryRef} id="footerBoundary"></div>
     </main>
   );
 }
