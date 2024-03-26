@@ -12,6 +12,7 @@ import {
 } from "../../../../components";
 import { useModal } from "../../../../hooks/useModal";
 import { Link, Folder } from "../../../../types";
+import Image from "next/image";
 
 interface Props {
   link: Link;
@@ -82,7 +83,7 @@ export function FolderCard({ link, folders }: Props) {
             <img src={link[imageSource] || noImg} alt="cardCover" />:
           </div>
           <button className={styles.likeBtn}>
-            <img src={starImg} alt="likeBtn" />
+            <Image src={starImg} alt="likeBtn" />
           </button>
           <div className={styles["link-contents"]}>
             <div className={styles["link-header"]}>

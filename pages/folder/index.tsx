@@ -1,3 +1,13 @@
+import { Footer } from "@/components";
+import { FolderHeader } from "./components";
+import FolderMain from "./components/FolderMain";
+
 export default function Folder() {
-  return <>Folder 페이지 입니다</>;
+  return (
+    <>
+      <FolderHeader />
+      <FolderMain />
+      <Footer />
+    </>
+  );
 }
