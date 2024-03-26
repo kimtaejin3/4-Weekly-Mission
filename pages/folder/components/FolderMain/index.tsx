@@ -17,8 +17,6 @@ export default function FolderMain() {
     useAsync(getFolderList);
   const [linksLoading, linksError, getLinksAsync] = useAsync(getLinks);
   const search = useSearch();
-  const [style, setStyle] = useState({});
-  // const flag = useRef(false);
   const { isVisible: headerVisible, ref: headerBoundaryRef } =
     useIntersectionObserver();
 
@@ -54,29 +52,6 @@ export default function FolderMain() {
   useEffect(() => {
     console.log("headerVisible:", headerVisible);
   }, [headerVisible]);
-
-  //           setStyle({
-  //             position: "fixed",
-  //             bottom: 0,
-  //             left: 0,
-  //             right: 0,
-  //             zIndex: 9999,
-  //           });
-  //         } else {
-  //           setStyle({});
-  //         }
-  //       });
-  //     },
-  //     {
-  //       root: null,
-  //       rootMargin: "0px",
-  //       threshold: 1,
-  //     }
-  //   );
-
-  //   observer.observe(document.querySelector("#mainEntry") as HTMLElement);
-  //   observer.observe(document.querySelector("#mainExit") as HTMLElement);
-  // }, []);
 
   return (
     <main>
