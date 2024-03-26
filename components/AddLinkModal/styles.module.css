@@ -79,7 +79,7 @@
   width: 17px;
   height: 15px;
   display: block;
-  background-image: url("../../../src/assets/check.svg");
+  background-image: url("../../assets/check.svg");
   background-repeat: no-repeat;
   background-size: cover;
 }

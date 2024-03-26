@@ -17,8 +17,6 @@ interface Props {
   folderName: string;
 }
 
-const { Kakao } = window;
-
 export const ShareModal = forwardRef(
   ({ openModal, handleModalClose, folderName }: Props, ref) => {
     const handleCopyClipBoard = (text: string) => {
@@ -31,6 +29,7 @@ export const ShareModal = forwardRef(
     };
 
     useEffect(() => {
+      const { Kakao } = window;
       if (!Kakao) return;
       Kakao.cleanup();
       console.log("key:", process.env.REACT_APP_KAKAO_KEY);
@@ -39,6 +38,8 @@ export const ShareModal = forwardRef(
 
     const kakaoShare = () => {
       console.log(`http://${window.location.host}/Linkbrary.png`);
+      const { Kakao } = window;
+
       Kakao.Share.sendDefault({
         objectType: "feed",
         content: {
@@ -106,3 +107,5 @@ export const ShareModal = forwardRef(
     );
   }
 );
+
+ShareModal.displayName = "ShareModal";

@@ -1,8 +1,10 @@
 import styles from "./styles.module.css";
-import logo from "../../assets/header-logo.svg";
+import logo from "@/assets/header-logo.svg";
 import { useEffect, useState } from "react";
 import { useAsync } from "../../hooks/useAsync";
 import { getSampleUser } from "../../api/api";
+import Image from "next/image";
+import Link from "next/link";
 
 interface User {
   profileImageSource: string;
@@ -27,9 +29,9 @@ export function Header() {
     <header className={styles.header}>
       <div className={styles.headings}>
         <h1 className={styles["header-logo"]}>
-          <a href="/">
-            <img src={logo} alt="header_logo" />
-          </a>
+          <Link href="/">
+            <Image src={logo} alt="header_logo" />
+          </Link>
         </h1>
         {user ? (
           <>

@@ -1,7 +1,7 @@
 import styles from "./styles.module.css";
-import noImg from "../../assets/noImg.png";
-import { getTimeAgo, formatDate } from "../../utils/time";
-import { Link } from "../../types";
+import noImg from "@/assets/noImg.png";
+import { getTimeAgo, formatDate } from "@/utils/time";
+import { Link } from "@/types";
 
 interface Props {
   link: Link;
