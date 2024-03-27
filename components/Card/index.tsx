@@ -2,6 +2,7 @@ import styles from "./styles.module.css";
 import noImg from "@/assets/noImg.png";
 import { getTimeAgo, formatDate } from "@/utils/time";
 import { Link } from "@/types";
+import Image from "next/image";
 
 interface Props {
   link: Link;
@@ -10,7 +11,6 @@ interface Props {
 export function Card({ link }: Props) {
   const createdAt = "createdAt" in link ? "createdAt" : "created_at";
   const imageSource = "imageSource" in link ? "imageSource" : "image_source";
-  console.log("link:", link);
   return (
     <>
       <a

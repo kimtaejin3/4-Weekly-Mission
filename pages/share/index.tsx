@@ -38,7 +38,7 @@ export default function Share() {
             <div className={styles["profile-author"]}>
               @{folderInfo.owner.name}
             </div>
-            <h2 className={styles["profile-title"]}>{folderInfo?.name}</h2>
+            <h2 className={styles["profile-title"]}>{folderInfo.name}</h2>
             {error?.message && <div>{error.message}</div>}
           </div>
         </div>
