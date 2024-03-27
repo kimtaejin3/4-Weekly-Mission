@@ -51,3 +51,5 @@ export const AddLinkModal = forwardRef(
     );
   }
 );
+
+AddLinkModal.displayName = "AddLinkModal";

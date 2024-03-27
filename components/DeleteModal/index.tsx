@@ -26,3 +26,5 @@ export const DeleteModal = forwardRef(
     );
   }
 );
+
+DeleteModal.displayName = "DeleteModal";

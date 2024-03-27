@@ -24,3 +24,5 @@ export const AddModal = forwardRef(
     );
   }
 );
+
+AddModal.displayName = "AddModal";

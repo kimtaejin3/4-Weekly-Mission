@@ -29,3 +29,5 @@ export const ModifyModal = forwardRef(
     );
   }
 );
+
+ModifyModal.displayName = "ModifyModal";

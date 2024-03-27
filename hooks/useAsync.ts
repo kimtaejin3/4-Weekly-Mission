@@ -5,10 +5,10 @@ type Error = {
   stack: string;
 };
 
-type PromiseUnpack<T> = T extends Promise<infer U> ? U : T;
+// type PromiseUnpack<T> = T extends Promise<infer U> ? U : T;
 
 export function useAsync<
-  T extends (...args: any[]) => Promise<PromiseUnpack<ReturnType<T>>>
+  T extends (...args: any[]) => Promise<Awaited<ReturnType<T>>>
 >(callback: T) {
   const [pending, setPending] = useState(true);
   const [error, setError] = useState<Error | null>(null);
