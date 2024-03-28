@@ -3,6 +3,7 @@ import styles from "./styles.module.css";
 import { FolderCard } from "../../pages/folder/components/FolderCard";
 import { Folder, Link } from "../../types";
 import { useSearch } from "@/hooks/useSearch";
+import { filterData } from "@/utils/filterData";
 
 interface Props {
   links: Link[];
@@ -15,28 +16,24 @@ export function CardList(props: Props) {
   const { query } = useSearch();
   const santinizedQuery = query[0] ? query[0].split(" ").join("") : "";
 
+  const filteredLinks = filterData<Link>({
+    list: props.links,
+    targetKeys: ["title", "description", "url"],
+    keyword: santinizedQuery,
+  });
+
   return (
     <ul className={styles["l_row"]}>
-      {props.links?.map((link) => {
-        if (!link.description || !link.title || !link.url) {
-          return <></>;
-        }
-
-        if (
-          link.description.includes(santinizedQuery) ||
-          link.title.includes(santinizedQuery) ||
-          link.url.includes(santinizedQuery)
-        ) {
-          return (
-            <li key={link.id} className={styles["l_col"]}>
-              {!isFolderCard ? (
-                <Card link={link} />
-              ) : (
-                <FolderCard link={link} folders={props.folders as Folder[]} />
-              )}
-            </li>
-          );
-        }
+      {filteredLinks.map((link) => {
+        return (
+          <li key={link.id} className={styles["l_col"]}>
+            {!isFolderCard ? (
+              <Card link={link} />
+            ) : (
+              <FolderCard link={link} folders={props.folders as Folder[]} />
+            )}
+          </li>
+        );
       })}
     </ul>
   );

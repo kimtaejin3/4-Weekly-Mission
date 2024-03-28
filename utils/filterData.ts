@@ -1,4 +1,4 @@
-export function filterData<T extends { [key: string]: string }>({
+export function filterData<T extends { [key in keyof T]: string }>({
   list,
   targetKeys,
   keyword,
@@ -11,7 +11,11 @@ export function filterData<T extends { [key: string]: string }>({
     let operation = 0;
 
     targetKeys.forEach((targetKey) => {
-      if ((listItem[targetKey] as string).includes(keyword)) {
+      if (!listItem[targetKey]) {
+        return;
+      }
+
+      if (listItem[targetKey].includes(keyword)) {
         operation = 1;
       }
     });
@@ -19,9 +23,3 @@ export function filterData<T extends { [key: string]: string }>({
     return operation;
   });
 }
-
-filterData({
-  list: [{ name: "a", age: "1" }],
-  targetKeys: ["name"],
-  keyword: "ad",
-});
