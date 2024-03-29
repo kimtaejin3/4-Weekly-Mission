@@ -10,6 +10,7 @@ import { AddModal } from "./AddModal";
 import { ShareModal } from "./ShareModal";
 import { AddLinkModal } from "./AddLinkModal";
 import { SearchInput } from "./SearchInput";
+import { Input } from "./Input";
 export {
   Header,
   CardList,
@@ -23,4 +24,5 @@ export {
   ShareModal,
   AddLinkModal,
   SearchInput,
+  Input,
 };
