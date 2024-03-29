@@ -21,7 +21,11 @@ export function Card({ link }: Props) {
       >
         <div className={styles.link}>
           <div className={styles["link-cover"]}>
-            <img src={link[imageSource] || noImg} alt="cardCover" />:
+            {link[imageSource] ? (
+              <img src={link[imageSource]} alt="cardCover" />
+            ) : (
+              <Image src={noImg} alt="cardCover" />
+            )}
           </div>
           <div className={styles["link-contents"]}>
             <div className={styles["link-header"]}>

@@ -75,7 +75,8 @@ export function FolderCard({ link, folders }: Props) {
         />
         <div className={styles.link}>
           <div className={styles["link-cover"]}>
-            <img src={link[imageSource] || noImg} alt="cardCover" />
+            {/* <Image src={noImg} alt="cardCover" /> */}
+            <img src={link[imageSource]} alt="cardCover" />
           </div>
           <button className={styles.likeBtn}>
             <Image src={starImg} alt="likeBtn" />
