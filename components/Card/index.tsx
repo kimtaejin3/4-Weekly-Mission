@@ -30,16 +30,14 @@ export function Card({ link }: Props) {
           <div className={styles["link-contents"]}>
             <div className={styles["link-header"]}>
               <p className={styles["link-update"]}>
-                {getTimeAgo(link[createdAt] as string)}
+                {getTimeAgo(link[createdAt])}
               </p>
             </div>
             <h2 className={styles["link-title"]}>
               {!link.title ? "제목없음" : link.title}
             </h2>
             <p className={styles["link-description"]}>{link.description}</p>
-            <p className={styles["link-date"]}>
-              {formatDate(link[createdAt] as string)}
-            </p>
+            <p className={styles["link-date"]}>{formatDate(link[createdAt])}</p>
           </div>
         </div>
       </a>
