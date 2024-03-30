@@ -18,7 +18,7 @@ export function CardList(props: Props) {
 
   const filteredLinks = filterData<Link>({
     list: props.links,
-    targetKeys: ["title", "url", "description"],
+    targetKeys: ["title", "description", "url"],
     keyword: santinizedQuery,
   });
 

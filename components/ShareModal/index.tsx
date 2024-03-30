@@ -33,12 +33,10 @@ export const ShareModal = forwardRef(
       const { Kakao } = window;
       if (!Kakao) return;
       Kakao.cleanup();
-      console.log("key:", process.env.REACT_APP_KAKAO_KEY);
-      Kakao.init(process.env.REACT_APP_KAKAO_KEY);
+      Kakao.init(process.env.NEXT_PUBLIC_KAKAO_API_KEY);
     }, []);
 
     const kakaoShare = () => {
-      console.log(`http://${window.location.host}/Linkbrary.png`);
       const { Kakao } = window;
       if (!Kakao) return;
       Kakao.Share.sendDefault({
