@@ -38,7 +38,6 @@ export default function SignUp() {
     formState: { errors },
     clearErrors,
     handleSubmit,
-    setError,
     watch,
   } = useForm<FormType>({
     mode: "onBlur",

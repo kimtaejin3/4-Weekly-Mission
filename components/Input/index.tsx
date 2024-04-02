@@ -57,9 +57,9 @@ export function Input({
             placeholder={placeholder || "비밀번호"}
             type={!toggle ? "password" : "text"}
             onChange={(e) => {
-              clearErrors("password");
               onInputChange(e);
             }}
+            onFocus={() => clearErrors("password")}
           />
         </div>
         {error?.message && (
@@ -78,9 +78,9 @@ export function Input({
         placeholder={placeholder || "이메일"}
         type="text"
         onChange={(e) => {
-          clearErrors("email");
           onInputChange(e);
         }}
+        onFocus={() => clearErrors("email")}
       />
       {error?.message && <div className={styles.errorMsg}>{error.message}</div>}
     </div>
