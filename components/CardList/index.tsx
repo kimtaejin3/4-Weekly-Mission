@@ -1,6 +1,6 @@
 import { Card } from "../Card";
 import styles from "./styles.module.css";
-import { FolderCard } from "../../pages/folder/components/FolderCard";
+import { FolderCard } from "../FolderCard";
 import { Folder, Link } from "../../types";
 import { useSearch } from "@/hooks/useSearch";
 import { filterData } from "@/utils/filterData";

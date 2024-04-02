@@ -1,5 +1,5 @@
 import { CardList, SearchInput } from "@/components";
-import { FolderAddLinkArea, FolderCategory, FolderControl } from "../index";
+import { FolderAddLinkArea, FolderCategory, FolderControl } from "../";
 import styles from "./styles.module.css";
 import { useEffect, useRef, useState } from "react";
 import { getFolderList, getLinks } from "@/api/api";
@@ -8,7 +8,7 @@ import { useAsync } from "@/hooks/useAsync";
 import { Folder, Link } from "@/types";
 import useIntersectionObserver from "@/hooks/useIntersectionObserver";
 
-export default function FolderMain() {
+export function FolderMain() {
   const [folders, setFolders] = useState([] as Folder[]);
   const [selectedName, setSelectedName] = useState("전체");
   const [selectedId, setSelectedId] = useState<number | null>(null);
