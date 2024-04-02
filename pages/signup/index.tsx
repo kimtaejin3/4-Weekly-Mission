@@ -24,7 +24,6 @@ async function checkEmail(email: string) {
     await postCheckEmail({ email });
     return true;
   } catch (e) {
-    console.log(e);
     if ((e as CheckEmailResponseErrorType).message === "emailDuplication") {
       return "이미 사용 중인 이메일입니다.";
     }
@@ -59,7 +58,7 @@ export default function SignUp() {
         router.push("/folder");
       }
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   };
 

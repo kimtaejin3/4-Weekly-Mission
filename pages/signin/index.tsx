@@ -51,7 +51,6 @@ export default function SignIn() {
         type: "passwordInValid",
         message: "비밀번호를 확인해 주세요",
       });
-      // console.log((e as Error).message);
     }
   };
 

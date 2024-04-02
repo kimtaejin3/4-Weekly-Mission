@@ -56,7 +56,6 @@ export async function postCheckEmail({ email }: { email: string }) {
   });
 
   if (!response.ok) {
-    console.log(response.status);
     if (response.status === 409) {
       throw new Error("emailDuplication");
     } else {

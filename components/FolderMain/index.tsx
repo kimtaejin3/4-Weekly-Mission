@@ -39,7 +39,6 @@ export function FolderMain() {
     folderId: number | null;
   }) => {
     const links = await getLinksAsync(option);
-    console.log("links data:", links);
     if (!links) return;
     setLinks(links.data);
   };
@@ -49,9 +48,7 @@ export function FolderMain() {
     loadLinks({ userId: 4, folderId: selectedId });
   }, [selectedId]);
 
-  useEffect(() => {
-    console.log("headerVisible:", headerVisible);
-  }, [headerVisible]);
+  useEffect(() => {}, [headerVisible]);
 
   return (
     <main>
