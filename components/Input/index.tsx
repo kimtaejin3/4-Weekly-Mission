@@ -16,25 +16,26 @@ type FormType = {
 
 export function Input({
   id,
-  type = "notPassword",
+  type = "email",
   placeholder,
   register,
   error,
   clearErrors,
 }: {
   id: string;
-  type?: "password" | "notPassword";
-  placeholder?: string;
+  type?: "password" | "email";
+  placeholder: string;
   register: UseFormRegisterReturn;
   error: FieldError;
   clearErrors: UseFormClearErrors<FormType>;
 }) {
   const [toggle, setToggle] = useState(false);
   const onInputChange = register.onChange;
-  if (type === "password") {
-    return (
-      <div>
-        <div className={styles.field}>
+
+  return (
+    <div>
+      <div className={styles.field}>
+        {type === "password" && (
           <span
             className={styles.toggleBtn}
             onClick={(e) => {
@@ -48,40 +49,21 @@ export function Input({
               alt="eyeIcon"
             />
           </span>
-          <input
-            {...register}
-            id={id}
-            className={`${styles.input} ${
-              error?.message ? styles.inputError : ""
-            }`}
-            placeholder={placeholder || "비밀번호"}
-            type={!toggle ? "password" : "text"}
-            onChange={(e) => {
-              onInputChange(e);
-            }}
-            onFocus={() => clearErrors("password")}
-          />
-        </div>
-        {error?.message && (
-          <div className={styles.errorMsg}>{error.message}</div>
         )}
+        <input
+          {...register}
+          id={id}
+          className={`${styles.input} ${
+            error?.message ? styles.inputError : ""
+          }`}
+          placeholder={placeholder}
+          type={!toggle ? "password" : "text"}
+          onChange={(e) => {
+            onInputChange(e);
+          }}
+          onFocus={() => clearErrors(type)}
+        />
       </div>
-    );
-  }
-
-  return (
-    <div>
-      <input
-        {...register}
-        id={id}
-        className={`${styles.input} ${error?.message ? styles.inputError : ""}`}
-        placeholder={placeholder || "이메일"}
-        type="text"
-        onChange={(e) => {
-          onInputChange(e);
-        }}
-        onFocus={() => clearErrors("email")}
-      />
       {error?.message && <div className={styles.errorMsg}>{error.message}</div>}
     </div>
   );
