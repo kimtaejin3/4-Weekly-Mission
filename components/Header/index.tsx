@@ -47,9 +47,9 @@ export function Header() {
             </div>
           </>
         ) : (
-          <a href="/signin" className="btn">
+          <Link href="/signin" className="btn">
             로그인
-          </a>
+          </Link>
         )}
       </div>
       {error?.message && <div>{error.message}</div>}
