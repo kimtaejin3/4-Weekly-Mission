@@ -8,6 +8,17 @@ import { Input } from "@/components";
 import { FieldError, useForm } from "react-hook-form";
 import { postCheckEmail, postUserSignUp } from "@/api/user";
 import { useRouter } from "next/router";
+import {
+  EMAIL_ERROR_MESSAGE,
+  EMAIL_REGEX,
+  PASSWORD_CONFIRM_ERROR_MESSAGE,
+  PASSWORD_ERROR_MESSAGE,
+} from "@/constants/validation";
+import {
+  EMAIL_PLACEHOLDER,
+  PASSWORD_CONFIRM_PLACEHOLDER,
+  PASSWORD_PLACEHOLDER,
+} from "@/constants/placeholderMessage";
 
 type FormType = {
   email: string;
@@ -25,7 +36,7 @@ async function checkEmail(email: string) {
     return true;
   } catch (e) {
     if ((e as CheckEmailResponseErrorType).message === "emailDuplication") {
-      return "이미 사용 중인 이메일입니다.";
+      return EMAIL_ERROR_MESSAGE.duplicated;
     }
   }
 }
@@ -39,6 +50,7 @@ export default function SignUp() {
     clearErrors,
     handleSubmit,
     watch,
+    getValues,
   } = useForm<FormType>({
     mode: "onBlur",
     reValidateMode: "onBlur",
@@ -84,16 +96,16 @@ export default function SignUp() {
               <Input
                 id="email"
                 register={register("email", {
-                  required: "이메일을 입력하지 않았습니다.",
+                  required: EMAIL_ERROR_MESSAGE.empty,
                   pattern: {
-                    value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i,
-                    message: "올바른 이메일 주소가 아닙니다.",
+                    value: EMAIL_REGEX,
+                    message: EMAIL_ERROR_MESSAGE.notCorrect,
                   },
                   validate: checkEmail,
                 })}
                 error={errors.email as FieldError}
                 clearErrors={clearErrors}
-                placeholder="이메일을 입력해 주세요."
+                placeholder={EMAIL_PLACEHOLDER.required}
               />
             </section>
             <section className={styles.field}>
@@ -102,17 +114,16 @@ export default function SignUp() {
               </label>
               <Input
                 register={register("password", {
-                  required: "패스워드를 입력하지 않았습니다.",
+                  required: PASSWORD_ERROR_MESSAGE.empty,
                   pattern: {
                     value: /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{8,}$/i,
-                    message:
-                      "비밀번호는 영문, 숫자 조합 8자 이상 입력해 주세요.",
+                    message: PASSWORD_ERROR_MESSAGE.notCorrect,
                   },
                 })}
                 id="password"
                 type="password"
                 error={errors.password as FieldError}
-                placeholder="영문, 숫자를 조합해 8자 이상 입력해 주세요."
+                placeholder={PASSWORD_PLACEHOLDER.rule}
                 clearErrors={clearErrors}
               />
             </section>
@@ -123,15 +134,15 @@ export default function SignUp() {
               <Input
                 register={register("passwordConfirm", {
                   validate: (val: string) => {
-                    if (watch("password") != val) {
-                      return "비밀번호가 일치하지 않아요.";
+                    if (getValues("password") != val) {
+                      return PASSWORD_CONFIRM_ERROR_MESSAGE.notEqual;
                     }
                   },
                 })}
                 id="passwordConfirm"
                 type="password"
                 error={errors.passwordConfirm as FieldError}
-                placeholder="비밀번호와 일치하는 값을 입력해 주세요."
+                placeholder={PASSWORD_CONFIRM_PLACEHOLDER.rule}
                 clearErrors={clearErrors}
               />
             </section>

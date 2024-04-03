@@ -6,9 +6,17 @@ import HeaderLogo from "@/assets/header-logo.svg";
 import styles from "./styles.module.css";
 import { Input } from "@/components";
 import { FieldError, useForm } from "react-hook-form";
-import { FormEvent } from "react";
 import { postUserSignin } from "@/api/user";
 import { useRouter } from "next/router";
+import {
+  EMAIL_ERROR_MESSAGE,
+  EMAIL_REGEX,
+  PASSWORD_ERROR_MESSAGE,
+} from "@/constants/validation";
+import {
+  EMAIL_PLACEHOLDER,
+  PASSWORD_PLACEHOLDER,
+} from "@/constants/placeholderMessage";
 
 type FormType = {
   email: string;
@@ -45,11 +53,11 @@ export default function SignIn() {
     } catch (e) {
       setError("email", {
         type: "emailInValid",
-        message: "이메일을 확인해 주세요",
+        message: EMAIL_ERROR_MESSAGE.inValid,
       });
       setError("password", {
         type: "passwordInValid",
-        message: "비밀번호를 확인해 주세요",
+        message: PASSWORD_ERROR_MESSAGE.inValid,
       });
     }
   };
@@ -75,17 +83,17 @@ export default function SignIn() {
                 이메일
               </label>
               <Input
+                id="email"
+                placeholder={EMAIL_PLACEHOLDER.required}
                 register={register("email", {
-                  required: "이메일을 입력하지 않았습니다.",
+                  required: EMAIL_ERROR_MESSAGE.empty,
                   pattern: {
-                    value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i,
-                    message: "올바른 이메일 주소가 아닙니다.",
+                    value: EMAIL_REGEX,
+                    message: EMAIL_ERROR_MESSAGE.notCorrect,
                   },
                 })}
                 clearErrors={clearErrors}
-                id="email"
                 error={errors.email as FieldError}
-                placeholder="이메일을 입력해 주세요."
               />
             </section>
             <section className={styles.field}>
@@ -93,13 +101,13 @@ export default function SignIn() {
                 비밀번호
               </label>
               <Input
-                register={register("password", {
-                  required: "패스워드를 입력하지 않았습니다.",
-                })}
                 id="password"
                 type="password"
+                placeholder={PASSWORD_PLACEHOLDER.required}
+                register={register("password", {
+                  required: PASSWORD_ERROR_MESSAGE.empty,
+                })}
                 error={errors.password as FieldError}
-                placeholder="비밀번호를 입력해 주세요."
                 clearErrors={clearErrors}
               />
             </section>
