@@ -1,0 +1,34 @@
+.input {
+  border: 1px solid #ccd5e3;
+  border-radius: 5px;
+  width: 100%;
+  padding: 20px 10px;
+}
+
+.input::placeholder {
+  color: #9fa6b2;
+}
+
+.inputError {
+  border-color: #ff5b56;
+}
+
+.input:focus {
+  border: 1px solid #6d6afe;
+}
+
+.field {
+  position: relative;
+}
+
+.toggleBtn {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+}
+
+.errorMsg {
+  color: #ff5b56;
+  margin-top: 5px;
+}
