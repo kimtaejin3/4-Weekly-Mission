@@ -4,7 +4,7 @@ import noImg from "@/assets/noImg.png";
 import starImg from "@/assets/star.png";
 import kebabImg from "@/assets/kebab.png";
 import { useState } from "react";
-import { ModalPortal, PopOver, DeleteModal, AddLinkModal } from "@/components";
+import { PopOver, DeleteModal, AddLinkModal } from "@/components";
 import { useModal } from "@/hooks/useModal";
 import { Link, Folder } from "@/types";
 import Image from "next/image";
@@ -43,24 +43,20 @@ export function FolderCard({ link, folders }: Props) {
 
   return (
     <>
-      <ModalPortal>
-        <DeleteModal
-          openModal={openModal}
-          ref={modalRef}
-          handleModalClose={handleModalClose}
-          title="링크 삭제"
-          description={link.url}
-        />
-      </ModalPortal>
-      <ModalPortal>
-        <AddLinkModal
-          openModal={addOpenModal}
-          ref={addModalRef}
-          handleModalClose={addHandleModalClose}
-          folders={folders}
-          linkUrl={link.url}
-        />
-      </ModalPortal>
+      <DeleteModal
+        openModal={openModal}
+        ref={modalRef}
+        handleModalClose={handleModalClose}
+        title="링크 삭제"
+        description={link.url}
+      />
+      <AddLinkModal
+        openModal={addOpenModal}
+        ref={addModalRef}
+        handleModalClose={addHandleModalClose}
+        folders={folders}
+        linkUrl={link.url}
+      />
       <a
         className={styles.container}
         href={link.url}
@@ -84,7 +80,7 @@ export function FolderCard({ link, folders }: Props) {
           <div className={styles["link-contents"]}>
             <div className={styles["link-header"]}>
               <p className={styles["link-update"]}>
-                {getTimeAgo(link[createdAt] as string)}
+                {getTimeAgo(link[createdAt])}
               </p>
               <button onClick={handleMoreBtn} className={styles.moreBtn}>
                 <Image id="moreBtn" src={kebabImg} alt="kebabImg" />
@@ -94,9 +90,7 @@ export function FolderCard({ link, folders }: Props) {
               {!link.title ? "제목없음" : link.title}
             </h2>
             <p className={styles["link-description"]}>{link.description}</p>
-            <p className={styles["link-date"]}>
-              {formatDate(link[createdAt] as string)}
-            </p>
+            <p className={styles["link-date"]}>{formatDate(link[createdAt])}</p>
           </div>
         </div>
       </a>

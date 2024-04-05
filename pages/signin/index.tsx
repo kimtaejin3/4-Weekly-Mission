@@ -17,6 +17,7 @@ import {
   EMAIL_PLACEHOLDER,
   PASSWORD_PLACEHOLDER,
 } from "@/constants/placeholderMessage";
+import { useEffect } from "react";
 
 type FormType = {
   email: string;
@@ -32,6 +33,7 @@ export default function SignIn() {
     clearErrors,
     handleSubmit,
     setError,
+    setFocus,
   } = useForm<FormType>({
     mode: "onBlur",
     reValidateMode: "onBlur",

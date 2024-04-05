@@ -1,6 +1,6 @@
 import { useModal } from "@/hooks/useModal";
 import styles from "./styles.module.css";
-import { AddModal, ModalPortal } from "@/components";
+import { AddModal } from "@/components";
 import { Folder } from "@/types";
 
 interface Props {
@@ -29,13 +29,11 @@ export function FolderCategory({
 
   return (
     <>
-      <ModalPortal>
-        <AddModal
-          ref={modalRef}
-          openModal={openModal}
-          handleModalClose={handleModalClose}
-        />
-      </ModalPortal>
+      <AddModal
+        ref={modalRef}
+        openModal={openModal}
+        handleModalClose={handleModalClose}
+      />
       <div className={styles.container}>
         <div className={styles.tags}>
           <span

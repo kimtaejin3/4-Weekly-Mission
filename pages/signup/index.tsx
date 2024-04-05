@@ -5,7 +5,7 @@ import KakaoIcon from "@/assets/kakao.svg";
 import HeaderLogo from "@/assets/header-logo.svg";
 import styles from "./styles.module.css";
 import { Input } from "@/components";
-import { FieldError, useForm } from "react-hook-form";
+import { FieldError, UseFormRegisterReturn, useForm } from "react-hook-form";
 import { postCheckEmail, postUserSignUp } from "@/api/user";
 import { useRouter } from "next/router";
 import {
@@ -13,12 +13,14 @@ import {
   EMAIL_REGEX,
   PASSWORD_CONFIRM_ERROR_MESSAGE,
   PASSWORD_ERROR_MESSAGE,
+  PASSWORD_REGEX,
 } from "@/constants/validation";
 import {
   EMAIL_PLACEHOLDER,
   PASSWORD_CONFIRM_PLACEHOLDER,
   PASSWORD_PLACEHOLDER,
 } from "@/constants/placeholderMessage";
+import { useCallback } from "react";
 
 type FormType = {
   email: string;
@@ -30,7 +32,7 @@ type CheckEmailResponseErrorType = {
   message: string;
 };
 
-async function checkEmail(email: string) {
+async function checkIsDuplicated(email: string) {
   try {
     await postCheckEmail({ email });
     return true;
@@ -49,12 +51,44 @@ export default function SignUp() {
     formState: { errors },
     clearErrors,
     handleSubmit,
-    watch,
     getValues,
   } = useForm<FormType>({
     mode: "onBlur",
     reValidateMode: "onBlur",
   });
+
+  const getRegister = useCallback(
+    (type: "email" | "password" | "passwordConfirm") => {
+      switch (type) {
+        case "email":
+          return register("email", {
+            required: EMAIL_ERROR_MESSAGE.empty,
+            pattern: {
+              value: EMAIL_REGEX,
+              message: EMAIL_ERROR_MESSAGE.notCorrect,
+            },
+            validate: checkIsDuplicated,
+          });
+        case "password":
+          return register("password", {
+            required: PASSWORD_ERROR_MESSAGE.empty,
+            pattern: {
+              value: PASSWORD_REGEX,
+              message: PASSWORD_ERROR_MESSAGE.notCorrect,
+            },
+          });
+        case "passwordConfirm":
+          return register("passwordConfirm", {
+            validate: (val: string) => {
+              if (getValues("password") != val) {
+                return PASSWORD_CONFIRM_ERROR_MESSAGE.notEqual;
+              }
+            },
+          });
+      }
+    },
+    []
+  );
 
   const onSubmit = async (user: { email: string; password: string }) => {
     try {
@@ -95,17 +129,10 @@ export default function SignUp() {
               </label>
               <Input
                 id="email"
-                register={register("email", {
-                  required: EMAIL_ERROR_MESSAGE.empty,
-                  pattern: {
-                    value: EMAIL_REGEX,
-                    message: EMAIL_ERROR_MESSAGE.notCorrect,
-                  },
-                  validate: checkEmail,
-                })}
+                placeholder={EMAIL_PLACEHOLDER.required}
+                register={getRegister("email")}
                 error={errors.email as FieldError}
                 clearErrors={clearErrors}
-                placeholder={EMAIL_PLACEHOLDER.required}
               />
             </section>
             <section className={styles.field}>
@@ -113,17 +140,11 @@ export default function SignUp() {
                 비밀번호
               </label>
               <Input
-                register={register("password", {
-                  required: PASSWORD_ERROR_MESSAGE.empty,
-                  pattern: {
-                    value: /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{8,}$/i,
-                    message: PASSWORD_ERROR_MESSAGE.notCorrect,
-                  },
-                })}
                 id="password"
                 type="password"
-                error={errors.password as FieldError}
                 placeholder={PASSWORD_PLACEHOLDER.rule}
+                register={getRegister("password")}
+                error={errors.password as FieldError}
                 clearErrors={clearErrors}
               />
             </section>
@@ -132,15 +153,9 @@ export default function SignUp() {
                 비밀번호 확인
               </label>
               <Input
-                register={register("passwordConfirm", {
-                  validate: (val: string) => {
-                    if (getValues("password") != val) {
-                      return PASSWORD_CONFIRM_ERROR_MESSAGE.notEqual;
-                    }
-                  },
-                })}
                 id="passwordConfirm"
                 type="password"
+                register={getRegister("passwordConfirm")}
                 error={errors.passwordConfirm as FieldError}
                 placeholder={PASSWORD_CONFIRM_PLACEHOLDER.rule}
                 clearErrors={clearErrors}

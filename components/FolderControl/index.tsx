@@ -4,12 +4,7 @@ import penImg from "@/assets/pen.png";
 import shareImg from "@/assets/share.png";
 import Image from "next/image";
 import { useModal } from "@/hooks/useModal";
-import {
-  DeleteModal,
-  ModalPortal,
-  ModifyModal,
-  ShareModal,
-} from "@/components";
+import { DeleteModal, ModifyModal, ShareModal } from "@/components";
 
 export function FolderControl({ folderName }: { folderName: string }) {
   const { openModal, modalRef, handleModalClose, handleModalOpen } = useModal();
@@ -40,31 +35,25 @@ export function FolderControl({ folderName }: { folderName: string }) {
 
   return (
     <>
-      <ModalPortal>
-        <DeleteModal
-          ref={modalRef}
-          openModal={openModal}
-          handleModalClose={handleModalClose}
-          title="폴더 삭제"
-          description={folderName}
-        />
-      </ModalPortal>
-      <ModalPortal>
-        <ModifyModal
-          ref={modifyModalRef}
-          openModal={modifyOpenModal}
-          handleModalClose={modifyHandleModalClose}
-          folderName={folderName}
-        />
-      </ModalPortal>
-      <ModalPortal>
-        <ShareModal
-          ref={shareModalRef}
-          openModal={shareOpenModal}
-          handleModalClose={shareHandleModalClose}
-          folderName={folderName}
-        />
-      </ModalPortal>
+      <DeleteModal
+        ref={modalRef}
+        openModal={openModal}
+        handleModalClose={handleModalClose}
+        title="폴더 삭제"
+        description={folderName}
+      />
+      <ModifyModal
+        ref={modifyModalRef}
+        openModal={modifyOpenModal}
+        handleModalClose={modifyHandleModalClose}
+        folderName={folderName}
+      />
+      <ShareModal
+        ref={shareModalRef}
+        openModal={shareOpenModal}
+        handleModalClose={shareHandleModalClose}
+        folderName={folderName}
+      />
       <div className={styles.container}>
         <div className={styles.folderName}>{folderName}</div>
         {folderName === "전체" ? (

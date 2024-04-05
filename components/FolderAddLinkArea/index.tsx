@@ -21,15 +21,13 @@ export function FolderAddLinkArea({ style, folders }: Props) {
 
   return (
     <>
-      <ModalPortal>
-        <AddLinkModal
-          ref={modalRef}
-          openModal={openModal}
-          handleModalClose={handleModalClose}
-          folders={folders}
-          linkUrl={url}
-        />
-      </ModalPortal>
+      <AddLinkModal
+        ref={modalRef}
+        openModal={openModal}
+        handleModalClose={handleModalClose}
+        folders={folders}
+        linkUrl={url}
+      />
       <div style={style} id="addLinkArea" className={styles.container}>
         <div className={styles.addLinkAreaWrapper}>
           <div className={styles.addLinkArea}>

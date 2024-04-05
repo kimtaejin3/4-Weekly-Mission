@@ -52,10 +52,7 @@ export function FolderMain() {
 
   return (
     <main>
-      {(folderListError || linksError) && (
-        <div>네트워크 오류입니다. 인터넷 연결상태를 확인하세요</div>
-      )}
-      <div style={{ backgroundColor: "red", height: "180px" }}>
+      <div style={{ height: "180px" }}>
         <FolderAddLinkArea
           style={
             !headerVisible && !footerVisible

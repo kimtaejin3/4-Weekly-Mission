@@ -1,3 +1,4 @@
+import { ModalPortal } from "../ModalPortal";
 import styles from "./styles.module.css";
 import { ImCross } from "react-icons/im";
 
@@ -19,7 +20,7 @@ export const Modal = ({
   }
 
   return (
-    <>
+    <ModalPortal>
       <div id={styles.backdrop}>.</div>
       <div className={styles.container}>
         <div className={styles.modal} ref={modalRef}>
@@ -29,6 +30,6 @@ export const Modal = ({
           {children}
         </div>
       </div>
-    </>
+    </ModalPortal>
   );
 };
