@@ -14,8 +14,6 @@ export function FolderCategory({
   selectedId,
   onSelectedFolder,
 }: Props) {
-  const { openModal, modalRef, handleModalClose, handleModalOpen } = useModal();
-
   const handleFolderSelectClick = (e: React.MouseEvent) => {
     onSelectedFolder({
       name: (e.target as HTMLElement).textContent as string,
@@ -23,17 +21,10 @@ export function FolderCategory({
     });
   };
 
-  const handleFolderAddClick = (e: React.MouseEvent) => {
-    handleModalOpen();
-  };
+  const handleFolderAddClick = (e: React.MouseEvent) => {};
 
   return (
     <>
-      <AddModal
-        ref={modalRef}
-        openModal={openModal}
-        handleModalClose={handleModalClose}
-      />
       <div className={styles.container}>
         <div className={styles.tags}>
           <span

@@ -5,55 +5,28 @@ import shareImg from "@/assets/share.png";
 import Image from "next/image";
 import { useModal } from "@/hooks/useModal";
 import { DeleteModal, ModifyModal, ShareModal } from "@/components";
+import { useContext } from "react";
+import { ModalDispatchContext } from "@/context/modalContext";
 
 export function FolderControl({ folderName }: { folderName: string }) {
-  const { openModal, modalRef, handleModalClose, handleModalOpen } = useModal();
-  const {
-    openModal: modifyOpenModal,
-    modalRef: modifyModalRef,
-    handleModalClose: modifyHandleModalClose,
-    handleModalOpen: modifyHandleModalOpen,
-  } = useModal();
-  const {
-    openModal: shareOpenModal,
-    modalRef: shareModalRef,
-    handleModalClose: shareHandleModalClose,
-    handleModalOpen: shareHandleModalOpen,
-  } = useModal();
+  const dispatch = useContext(ModalDispatchContext)!;
 
   const handleDeleteClick = () => {
-    handleModalOpen();
+    dispatch({
+      type: "showModal",
+      payload: {
+        modalType: "DeleteModal",
+        data: { title: "링크 삭제", description: folderName },
+      },
+    });
   };
 
-  const handleModifyClick = () => {
-    modifyHandleModalOpen();
-  };
+  const handleModifyClick = () => {};
 
-  const handleShareClick = () => {
-    shareHandleModalOpen();
-  };
+  const handleShareClick = () => {};
 
   return (
     <>
-      <DeleteModal
-        ref={modalRef}
-        openModal={openModal}
-        handleModalClose={handleModalClose}
-        title="폴더 삭제"
-        description={folderName}
-      />
-      <ModifyModal
-        ref={modifyModalRef}
-        openModal={modifyOpenModal}
-        handleModalClose={modifyHandleModalClose}
-        folderName={folderName}
-      />
-      <ShareModal
-        ref={shareModalRef}
-        openModal={shareOpenModal}
-        handleModalClose={shareHandleModalClose}
-        folderName={folderName}
-      />
       <div className={styles.container}>
         <div className={styles.folderName}>{folderName}</div>
         {folderName === "전체" ? (

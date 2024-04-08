@@ -57,7 +57,9 @@ export function Input({
           }`}
           placeholder={placeholder}
           type={!toggle ? "password" : "text"}
-          onChange={() => clearErrors(type)}
+          onChange={() => {
+            error && clearErrors(type);
+          }}
         />
       </div>
       {error?.message && <div className={styles.errorMsg}>{error.message}</div>}

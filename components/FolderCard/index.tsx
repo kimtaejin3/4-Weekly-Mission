@@ -20,14 +20,6 @@ export function FolderCard({ link, folders }: Props) {
 
   const [openPopOver, setOpenPopOver] = useState(false);
 
-  const { openModal, modalRef, handleModalClose, handleModalOpen } = useModal();
-  const {
-    openModal: addOpenModal,
-    modalRef: addModalRef,
-    handleModalClose: addHandleModalClose,
-    handleModalOpen: addHandleModalOpen,
-  } = useModal();
-
   const handlePopOverClose = () => {
     setOpenPopOver(false);
   };
@@ -43,20 +35,6 @@ export function FolderCard({ link, folders }: Props) {
 
   return (
     <>
-      <DeleteModal
-        openModal={openModal}
-        ref={modalRef}
-        handleModalClose={handleModalClose}
-        title="링크 삭제"
-        description={link.url}
-      />
-      <AddLinkModal
-        openModal={addOpenModal}
-        ref={addModalRef}
-        handleModalClose={addHandleModalClose}
-        folders={folders}
-        linkUrl={link.url}
-      />
       <a
         className={styles.container}
         href={link.url}
@@ -66,8 +44,6 @@ export function FolderCard({ link, folders }: Props) {
         <PopOver
           openPopOver={openPopOver}
           handlePopOverClose={handlePopOverClose}
-          onDeleteModalOpen={handleModalOpen}
-          onAddLinkModalOpen={addHandleModalOpen}
         />
         <div className={styles.link}>
           <div className={styles["link-cover"]}>

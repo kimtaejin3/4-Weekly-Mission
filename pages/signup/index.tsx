@@ -20,7 +20,7 @@ import {
   PASSWORD_CONFIRM_PLACEHOLDER,
   PASSWORD_PLACEHOLDER,
 } from "@/constants/placeholderMessage";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 
 type FormType = {
   email: string;
@@ -106,6 +106,12 @@ export default function SignUp() {
       console.error(e);
     }
   };
+
+  useEffect(() => {
+    if (localStorage.getItem("accessToken")) {
+      router.push("/folder");
+    }
+  }, []);
 
   return (
     <div className={styles.rootContainer}>

@@ -64,6 +64,12 @@ export default function SignIn() {
     }
   };
 
+  useEffect(() => {
+    if (localStorage.getItem("accessToken")) {
+      router.push("/folder");
+    }
+  }, []);
+
   return (
     <div className={styles.rootContainer}>
       <main className={styles.main}>
