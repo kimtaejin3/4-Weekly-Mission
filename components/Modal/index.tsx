@@ -8,7 +8,7 @@ import { AddModal } from "../AddModal";
 import { ModifyModal } from "../ModifyModal";
 import { ShareModal } from "../ShareModal";
 import { ModalDispatchContext, ModalContext } from "@/context/modalContext";
-import { ModalType } from "./ModalType";
+import { AddLinkModalType, AddModalType, ModalType } from "./ModalType";
 
 const renderComponent = (modalData: ModalType): ReactNode => {
   switch (modalData.type) {

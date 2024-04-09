@@ -2,7 +2,6 @@ import styles from "./styles.module.css";
 import logo from "@/assets/header-logo.svg";
 import { useEffect, useState } from "react";
 import { useAsync } from "../../hooks/useAsync";
-import { getSampleUser } from "../../api/api";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -11,20 +10,13 @@ interface User {
   email: string;
 }
 
-export function Header() {
-  const [user, setUser] = useState<User>({} as User);
-  const [_, error, getUserAsync] = useAsync(getSampleUser);
-
-  const loadUser = async () => {
-    const data = await getUserAsync();
-    if (!data) return;
-    setUser(data);
-  };
-
-  useEffect(() => {
-    loadUser();
-  }, []);
-
+export function Header({
+  userEmail,
+  userImage,
+}: {
+  userEmail: string;
+  userImage: string;
+}) {
   return (
     <header className={styles.header}>
       <div className={styles.headings}>
@@ -33,16 +25,16 @@ export function Header() {
             <Image src={logo} alt="header_logo" />
           </Link>
         </h1>
-        {user ? (
+        {true ? (
           <>
             <div className={styles["headerProfile"]}>
               <img
                 className={styles.profileImg}
-                src={user.profileImageSource}
+                src={userImage}
                 alt="profileImg"
               />
               <p className={styles.profileEmail} style={{ fontSize: "1.2rem" }}>
-                {user.email}
+                {userEmail}
               </p>
             </div>
           </>
@@ -52,7 +44,6 @@ export function Header() {
           </Link>
         )}
       </div>
-      {error?.message && <div>{error.message}</div>}
     </header>
   );
 }

@@ -1,53 +1,81 @@
-import { Header, Footer, CardList } from "../../components";
+import { Header, Footer, CardList, FolderHeader } from "../../components";
 import styles from "./styles.module.css";
 import { useEffect, useState } from "react";
-import { getFolderInfo } from "@/api/api";
 import { useAsync } from "@/hooks/useAsync";
-import { FolderInfo } from "@/types";
+import { FolderInfo, Link, User } from "@/types";
 import { SearchInput } from "@/components/SearchInput";
+import { getFolder, getLinks, getUser } from "@/api/share";
 
 export default function Share() {
-  const [folderInfo, setFolderInfo] = useState<FolderInfo>({} as FolderInfo);
-  const [loading, error, getFolderInfoAsync] = useAsync(getFolderInfo);
+  const [folderLoading, folderError, getFolderAsync] = useAsync(getFolder);
+  const [userLoading, userError, getUserAsync] = useAsync(getUser);
+  const [linksLoading, linksError, getLinksAsync] = useAsync(getLinks);
+  const [folderName, setFolderName] = useState("");
+  const [userId, setUserId] = useState<number>();
+  const [user, setUser] = useState<User>();
+  const [links, setLinks] = useState<Link[]>();
 
-  const loadFolderInfo = async () => {
-    const data = await getFolderInfoAsync();
-    if (!data) return;
-    setFolderInfo(data.folder);
+  const handleLoadFolder = async (options: { folderId: string }) => {
+    const data = await getFolderAsync(options);
+    if (!data) {
+      return;
+    }
+    setFolderName(data.data[0].name);
+    setUserId(data.data[0].user_id);
+  };
+
+  const handleLoadUser = async (options: { userId: number }) => {
+    const data = await getUserAsync(options);
+    if (!data) {
+      return;
+    }
+    setUser(data.data[0]);
+  };
+
+  const handleLoadLinks = async (options: {
+    userId: string;
+    folderId: string;
+  }) => {
+    const data = await getLinksAsync(options);
+    if (!data) {
+      return;
+    }
   };
 
   useEffect(() => {
-    loadFolderInfo();
+    handleLoadFolder({ folderId: "282" });
   }, []);
 
-  if (loading) {
-    return <div>로딩중...</div>;
-  }
+  useEffect(() => {
+    if (!userId) {
+      return;
+    }
+
+    handleLoadUser({ userId });
+    // handleLoadLinks({userId, folderId});
+  }, [userId]);
 
   return (
     <>
-      <Header />
+      <FolderHeader />
       <main>
         <div className={styles["main-headings"]}>
           <div className={styles["profile"]}>
+            {userLoading && <div>loading</div>}
             <img
               className={styles["profile-cover"]}
-              src={folderInfo.owner.profileImageSource}
+              src={user?.image_source}
               alt="profile"
             />
-            <div className={styles["profile-author"]}>
-              @{folderInfo.owner.name}
-            </div>
-            <h2 className={styles["profile-title"]}>{folderInfo.name}</h2>
-            {error?.message && <div>{error.message}</div>}
+            <div className={styles["profile-author"]}>@{user?.name}</div>
+            <h2 className={styles["profile-title"]}>{folderName}</h2>
           </div>
         </div>
 
         <div className={styles["wrapper"]}>
           <SearchInput />
-          {error?.message && <div>{error.message}</div>}
 
-          <CardList links={folderInfo.links} />
+          {/* <CardList links={folderInfo.links} /> */}
         </div>
       </main>
       <Footer />

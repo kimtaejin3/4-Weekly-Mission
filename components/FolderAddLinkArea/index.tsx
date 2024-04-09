@@ -7,13 +7,13 @@ import { ModalDispatchContext } from "@/context/modalContext";
 
 interface Props {
   folders: Folder[];
-  style: CSSProperties;
+  isFloating: boolean;
 }
 
-export function FolderAddLinkArea({ style, folders }: Props) {
+export function FolderAddLinkArea({ folders, isFloating }: Props) {
   const [linkUrl, setLinkUrl] = useState("");
   const dispatch = useContext(ModalDispatchContext)!;
-
+  console.log(isFloating);
   const handleAddLinkClick = () => {
     dispatch({
       type: "showModal",
@@ -23,7 +23,10 @@ export function FolderAddLinkArea({ style, folders }: Props) {
 
   return (
     <>
-      <div style={style} id="addLinkArea" className={styles.container}>
+      <div
+        id="addLinkArea"
+        className={`${styles.container} ${isFloating ? styles.floating : ""}`}
+      >
         <div className={styles.addLinkAreaWrapper}>
           <div className={styles.addLinkArea}>
             <Image src={linkImg} alt="linkIconImg" />

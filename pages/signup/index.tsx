@@ -6,7 +6,7 @@ import HeaderLogo from "@/assets/header-logo.svg";
 import styles from "./styles.module.css";
 import { Input } from "@/components";
 import { FieldError, UseFormRegisterReturn, useForm } from "react-hook-form";
-import { postCheckEmail, postUserSignUp } from "@/api/user";
+import { postCheckEmail, postUserSignUp } from "@/api/auth";
 import { useRouter } from "next/router";
 import {
   EMAIL_ERROR_MESSAGE,

@@ -8,12 +8,12 @@ export type AddLinkModalType = {
   };
 };
 
-type AddModalType = {
+export type AddModalType = {
   modalType: "AddModal";
   data: null;
 };
 
-type DeleteModalType = {
+export type DeleteModalType = {
   modalType: "DeleteModal";
   data: {
     title: string;
@@ -21,14 +21,14 @@ type DeleteModalType = {
   };
 };
 
-type ModifyModalType = {
+export type ModifyModalType = {
   modalType: "ModifyModal";
   data: {
     folderName: string;
   };
 };
 
-type ShareModalType = {
+export type ShareModalType = {
   modalType: "ShareModal";
   data: {
     folderName: string;
