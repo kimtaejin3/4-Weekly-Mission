@@ -23,7 +23,7 @@ export async function getLinks({
 }: {
   userId: string;
   folderId: string;
-}): Promise<any> {
+}): Promise<{ data: Link[] }> {
   return (await instance.get(`/users/${userId}/links?folderId=${folderId}`))
     .data;
 }

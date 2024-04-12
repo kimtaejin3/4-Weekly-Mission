@@ -16,12 +16,18 @@ export function FolderHeader() {
     setUser(userData.data[0]);
   };
 
+  console.log(user);
+
   useEffect(() => {
     //개선
     if (localStorage.getItem("accessToken")) {
       handleLoadUser();
     }
   }, []);
+
+  if (loading) {
+    return <>로딩중이다</>;
+  }
 
   return (
     <header className={styles.header}>
@@ -34,7 +40,7 @@ export function FolderHeader() {
           </Link>
         </h1>
 
-        {user ? (
+        {Object.keys(user).length > 0 ? (
           <>
             <div className={styles["headerProfile"]}>
               <img

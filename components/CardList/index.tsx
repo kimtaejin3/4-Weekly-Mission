@@ -16,7 +16,7 @@ export function CardList(props: Props) {
   const { query } = useSearch();
   const santinizedQuery = query[0] ? query[0].split(" ").join("") : "";
 
-  const filteredLinks = filterData<Link>({
+  const filteredLinks = filterData({
     list: props.links,
     targetKeys: ["title", "description", "url"],
     keyword: santinizedQuery,

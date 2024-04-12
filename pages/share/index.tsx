@@ -40,6 +40,7 @@ export default function Share() {
     if (!data) {
       return;
     }
+    setLinks(data.data);
   };
 
   useEffect(() => {
@@ -52,7 +53,7 @@ export default function Share() {
     }
 
     handleLoadUser({ userId });
-    // handleLoadLinks({userId, folderId});
+    handleLoadLinks({ userId: String(userId), folderId: "282" });
   }, [userId]);
 
   return (
@@ -74,8 +75,12 @@ export default function Share() {
 
         <div className={styles["wrapper"]}>
           <SearchInput />
-
-          {/* <CardList links={folderInfo.links} /> */}
+          {linksLoading && <div>로딩중</div>}
+          {!linksLoading && links ? (
+            <CardList links={links} />
+          ) : (
+            <div>링크 정보들이 없습니다.</div>
+          )}
         </div>
       </main>
       <Footer />
