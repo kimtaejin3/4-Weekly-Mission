@@ -1,10 +1,11 @@
-import { Header, Footer, CardList, FolderHeader } from "../../components";
+import { Header, Footer, CardList, FolderHeader } from "../../../components";
 import styles from "./styles.module.css";
 import { useEffect, useState } from "react";
 import { useAsync } from "@/hooks/useAsync";
 import { FolderInfo, Link, User } from "@/types";
 import { SearchInput } from "@/components/SearchInput";
 import { getFolder, getLinks, getUser } from "@/api/share";
+import { useRouter } from "next/router";
 
 export default function Share() {
   const [folderLoading, folderError, getFolderAsync] = useAsync(getFolder);
@@ -14,10 +15,12 @@ export default function Share() {
   const [userId, setUserId] = useState<number>();
   const [user, setUser] = useState<User>();
   const [links, setLinks] = useState<Link[]>();
+  const router = useRouter();
+  const { folderId } = router.query;
 
   const handleLoadFolder = async (options: { folderId: string }) => {
     const data = await getFolderAsync(options);
-    if (!data) {
+    if (!data || data.data.length === 0) {
       return;
     }
     setFolderName(data.data[0].name);
@@ -44,8 +47,9 @@ export default function Share() {
   };
 
   useEffect(() => {
-    handleLoadFolder({ folderId: "282" });
-  }, []);
+    if (!folderId) return;
+    handleLoadFolder({ folderId: folderId as string });
+  }, [folderId]);
 
   useEffect(() => {
     if (!userId) {
@@ -53,7 +57,7 @@ export default function Share() {
     }
 
     handleLoadUser({ userId });
-    handleLoadLinks({ userId: String(userId), folderId: "282" });
+    handleLoadLinks({ userId: String(userId), folderId: folderId as string });
   }, [userId]);
 
   return (
@@ -68,18 +72,26 @@ export default function Share() {
               src={user?.image_source}
               alt="profile"
             />
-            <div className={styles["profile-author"]}>@{user?.name}</div>
-            <h2 className={styles["profile-title"]}>{folderName}</h2>
+            <div className={styles["profile-author"]}>
+              @{user?.name || "It doesnt exist"}
+            </div>
+            <h2 className={styles["profile-title"]}>
+              {folderName || "존재하지 않는 폴더입니다"}
+            </h2>
           </div>
         </div>
 
         <div className={styles["wrapper"]}>
           <SearchInput />
-          {linksLoading && <div>로딩중</div>}
-          {!linksLoading && links ? (
-            <CardList links={links} />
+
+          {!linksLoading ? (
+            links ? (
+              <CardList links={links} />
+            ) : (
+              <div>링크 정보들이 없습니다.</div>
+            )
           ) : (
-            <div>링크 정보들이 없습니다.</div>
+            <div>로딩중</div>
           )}
         </div>
       </main>

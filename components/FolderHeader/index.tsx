@@ -16,8 +16,6 @@ export function FolderHeader() {
     setUser(userData.data[0]);
   };
 
-  console.log(user);
-
   useEffect(() => {
     //개선
     if (localStorage.getItem("accessToken")) {
