@@ -1,22 +1,13 @@
 import { Folder, FolderInfo, Link, User } from "@/types";
 import { getCookie } from "@/utils/cookie";
+import { instance } from "./axios";
 
 const BASE_URL = "https://bootcamp-api.codeit.kr/api";
 
-//추가
 export async function getUserFolderList(): Promise<{
   data: { folder: Folder[] };
 }> {
-  const response = await fetch(`${BASE_URL}/folders`, {
-    headers: {
-      Authorization: `Bearer ${getCookie("accessToken")}`,
-    },
-  });
-  if (!response.ok) {
-    throw new Error("폴더 정보를 불러오는데 실패했습니다");
-  }
-  const body = await response.json();
-  return body;
+  return (await instance.get("/folders")).data;
 }
 
 export async function getUserLinks({
@@ -26,14 +17,5 @@ export async function getUserLinks({
 }): Promise<{ data: { folder: Link[] } }> {
   const query = folderId ? `?folderId=${folderId}` : "";
 
-  const response = await fetch(`${BASE_URL}/links${query}`, {
-    headers: {
-      Authorization: `Bearer ${getCookie("accessToken")}`,
-    },
-  });
-  if (!response.ok) {
-    throw new Error("폴더 정보를 불러오는데 실패했습니다");
-  }
-  const body = await response.json();
-  return body;
+  return (await instance.get(`/links${query}`)).data;
 }
