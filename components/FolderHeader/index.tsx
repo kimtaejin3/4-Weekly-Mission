@@ -17,10 +17,7 @@ export function FolderHeader() {
   };
 
   useEffect(() => {
-    //개선
-    if (localStorage.getItem("accessToken")) {
-      handleLoadUser();
-    }
+    handleLoadUser();
   }, []);
 
   if (loading) {

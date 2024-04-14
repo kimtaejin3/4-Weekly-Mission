@@ -1,9 +1,11 @@
+import { getCookie } from "@/utils/cookie";
+
 const BASE_URL = "https://bootcamp-api.codeit.kr/api";
 
 export async function getUser() {
   const response = await fetch(`${BASE_URL}/users`, {
     headers: {
-      Authorization: `Bearer ${localStorage.getItem("accessToken")!}`,
+      Authorization: `Bearer ${getCookie("accessToken")}`,
     },
   });
 

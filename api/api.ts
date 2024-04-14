@@ -1,4 +1,5 @@
 import { Folder, FolderInfo, Link, User } from "@/types";
+import { getCookie } from "@/utils/cookie";
 
 const BASE_URL = "https://bootcamp-api.codeit.kr/api";
 
@@ -8,7 +9,7 @@ export async function getUserFolderList(): Promise<{
 }> {
   const response = await fetch(`${BASE_URL}/folders`, {
     headers: {
-      Authorization: `Bearer ${localStorage.getItem("accessToken")!}`,
+      Authorization: `Bearer ${getCookie("accessToken")}`,
     },
   });
   if (!response.ok) {
@@ -27,7 +28,7 @@ export async function getUserLinks({
 
   const response = await fetch(`${BASE_URL}/links${query}`, {
     headers: {
-      Authorization: `Bearer ${localStorage.getItem("accessToken")!}`,
+      Authorization: `Bearer ${getCookie("accessToken")}`,
     },
   });
   if (!response.ok) {
