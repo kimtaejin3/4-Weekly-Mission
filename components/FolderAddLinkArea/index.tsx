@@ -1,6 +1,6 @@
 import linkImg from "@/assets/link.png";
 import styles from "./styles.module.css";
-import { useState, CSSProperties, useContext, Dispatch } from "react";
+import { useState, useContext } from "react";
 import { Folder } from "@/types";
 import Image from "next/image";
 import { ModalDispatchContext } from "@/context/modalContext";
