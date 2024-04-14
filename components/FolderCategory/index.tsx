@@ -3,6 +3,7 @@ import styles from "./styles.module.css";
 import { AddModal } from "@/components";
 import { Folder } from "@/types";
 import Link from "next/link";
+import { Dispatch, SetStateAction } from "react";
 
 interface Props {
   folders: Folder[];

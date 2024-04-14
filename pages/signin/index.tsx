@@ -33,7 +33,6 @@ export default function SignIn() {
     clearErrors,
     handleSubmit,
     setError,
-    setFocus,
   } = useForm<FormType>({
     mode: "onBlur",
     reValidateMode: "onBlur",

@@ -30,6 +30,7 @@ export function Input({
   clearErrors: UseFormClearErrors<FormType>;
 }) {
   const [toggle, setToggle] = useState(false);
+  const originOncahnge = register.onChange;
 
   return (
     <div>
@@ -56,8 +57,9 @@ export function Input({
             error?.message ? styles.inputError : ""
           }`}
           placeholder={placeholder}
-          type={!toggle ? "password" : "text"}
-          onChange={() => {
+          type={type === "password" ? (!toggle ? "password" : "text") : type}
+          onChange={(e) => {
+            originOncahnge(e);
             error && clearErrors(type);
           }}
         />

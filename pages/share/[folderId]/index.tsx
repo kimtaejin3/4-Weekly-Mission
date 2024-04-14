@@ -73,7 +73,7 @@ export default function Share() {
               alt="profile"
             />
             <div className={styles["profile-author"]}>
-              @{user?.name || "It doesnt exist"}
+              @{user?.name || "It doesnt exist  "}
             </div>
             <h2 className={styles["profile-title"]}>
               {folderName || "존재하지 않는 폴더입니다"}
