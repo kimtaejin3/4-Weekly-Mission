@@ -8,9 +8,13 @@ export function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL("/signin", request.url));
     }
   }
-  if (request.nextUrl.pathname === "/signin") {
+  const prev = request.nextUrl.host;
+  if (
+    request.nextUrl.pathname === "/signin" ||
+    request.nextUrl.pathname === "/signup"
+  ) {
     if (cookie) {
-      return NextResponse.redirect(new URL("/folder", request.url));
+      return NextResponse.redirect(prev);
     }
   }
 }

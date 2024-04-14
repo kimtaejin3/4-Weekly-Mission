@@ -37,7 +37,6 @@ export function FolderMain() {
   const loadLinks = async (option: { folderId: string | null }) => {
     const links = await getLinksAsync(option);
     if (!links) return;
-    console.log(links);
     setLinks(links.data.folder);
   };
 

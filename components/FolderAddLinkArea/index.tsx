@@ -13,7 +13,6 @@ interface Props {
 export function FolderAddLinkArea({ folders, isFloating }: Props) {
   const [linkUrl, setLinkUrl] = useState("");
   const dispatch = useContext(ModalDispatchContext)!;
-  console.log(isFloating);
   const handleAddLinkClick = () => {
     dispatch({
       type: "showModal",

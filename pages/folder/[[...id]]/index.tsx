@@ -42,7 +42,6 @@ export default function FolderPage() {
     const links = await getLinksAsync(option);
     if (!links) return;
     setLinks(links.data.folder);
-    console.log("asdfasldfjaoweijowijepfa:", links);
   };
 
   useEffect(() => {
