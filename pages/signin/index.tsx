@@ -18,6 +18,7 @@ import {
   PASSWORD_PLACEHOLDER,
 } from "@/constants/placeholderMessage";
 import { useEffect } from "react";
+import { setCookie } from "@/utils/cookie";
 
 type FormType = {
   email: string;
@@ -45,12 +46,10 @@ export default function SignIn() {
         password: user.password,
       });
 
-      localStorage.setItem("accessToken", data.data.accessToken);
-      localStorage.setItem("refreshToken", data.data.refreshToken);
+      setCookie("accessToken", data.data.accessToken);
+      setCookie("refreshToken", data.data.refreshToken);
 
-      if (localStorage.getItem("accessToken")) {
-        router.push("/folder");
-      }
+      router.push("/folder");
     } catch (e) {
       setError("email", {
         type: "emailInValid",
@@ -62,12 +61,6 @@ export default function SignIn() {
       });
     }
   };
-
-  useEffect(() => {
-    if (localStorage.getItem("accessToken")) {
-      router.push("/folder");
-    }
-  }, []);
 
   return (
     <div className={styles.rootContainer}>

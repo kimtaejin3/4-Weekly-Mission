@@ -19,8 +19,7 @@ export default function FolderPage() {
 
   const { id, name } = router.query;
   const selectedId = (id && id[0]) || null;
-  // const selectedName = name || "전체";
-  const [selectedName, setSelectedName] = useState("전체");
+  const selectedName = name || "전체";
 
   const [links, setLinks] = useState([] as Link[]);
   const [folderListLoading, folderListError, getFolderListAsync] =
@@ -51,12 +50,6 @@ export default function FolderPage() {
 
   useEffect(() => {
     loadFolderList();
-  }, []);
-
-  useEffect(() => {
-    if (!localStorage.getItem("accessToken")) {
-      router.push("/signin");
-    }
   }, []);
 
   return (
