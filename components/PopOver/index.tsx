@@ -5,16 +5,9 @@ import { useRef } from "react";
 interface Props {
   openPopOver: boolean;
   handlePopOverClose: () => void;
-  onDeleteModalOpen: () => void;
-  onAddLinkModalOpen: () => void;
 }
 
-export function PopOver({
-  openPopOver,
-  handlePopOverClose,
-  onDeleteModalOpen,
-  onAddLinkModalOpen,
-}: Props) {
+export function PopOver({ openPopOver, handlePopOverClose }: Props) {
   const ref = useRef<HTMLDivElement>(null);
 
   useHandleOutsideClick(ref, handlePopOverClose);
@@ -22,13 +15,11 @@ export function PopOver({
   const handleLinkDeleteClick = (e: React.MouseEvent) => {
     e.preventDefault();
     handlePopOverClose();
-    onDeleteModalOpen();
   };
 
   const handleLinkAddClick = (e: React.MouseEvent) => {
     e.preventDefault();
     handlePopOverClose();
-    onAddLinkModalOpen();
   };
 
   return (

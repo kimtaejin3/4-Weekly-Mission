@@ -1,21 +1,26 @@
 import { CardList, SearchInput } from "@/components";
 import { FolderAddLinkArea, FolderCategory, FolderControl } from "../";
 import styles from "./styles.module.css";
-import { useEffect, useRef, useState } from "react";
-import { getFolderList, getLinks } from "@/api/api";
+import { Suspense, useEffect, useRef, useState } from "react";
+import { getUserFolderList, getUserLinks } from "@/api/api";
 import { useSearch } from "@/hooks/useSearch";
 import { useAsync } from "@/hooks/useAsync";
 import { Folder, Link } from "@/types";
 import useIntersectionObserver from "@/hooks/useIntersectionObserver";
+import { useRouter } from "next/router";
 
 export function FolderMain() {
   const [folders, setFolders] = useState([] as Folder[]);
-  const [selectedName, setSelectedName] = useState("전체");
-  const [selectedId, setSelectedId] = useState<number | null>(null);
+  const router = useRouter();
+
+  const { id, name } = router.query;
+  const selectedId = (id && id[0]) || null;
+  const selectedName = name || "전체";
+
   const [links, setLinks] = useState([] as Link[]);
   const [folderListLoading, folderListError, getFolderListAsync] =
-    useAsync(getFolderList);
-  const [linksLoading, linksError, getLinksAsync] = useAsync(getLinks);
+    useAsync(getUserFolderList);
+  const [linksLoading, linksError, getLinksAsync] = useAsync(getUserLinks);
   const search = useSearch();
   const { isVisible: headerVisible, ref: headerBoundaryRef } =
     useIntersectionObserver();
@@ -23,51 +28,31 @@ export function FolderMain() {
   const { isVisible: footerVisible, ref: footerBoundaryRef } =
     useIntersectionObserver();
 
-  const handleSelectedFolder = ({ name, id }: { name: string; id: number }) => {
-    setSelectedName(name);
-    setSelectedId(id);
-  };
-
-  const loadFolderList = async (option: { userId: number }) => {
-    const folders = await getFolderListAsync(option);
+  const loadFolderList = async () => {
+    const folders = await getFolderListAsync();
     if (!folders) return;
-    setFolders(folders.data);
+    setFolders(folders.data.folder);
   };
 
-  const loadLinks = async (option: {
-    userId: number;
-    folderId: number | null;
-  }) => {
+  const loadLinks = async (option: { folderId: string | null }) => {
     const links = await getLinksAsync(option);
     if (!links) return;
-    setLinks(links.data);
+    setLinks(links.data.folder);
   };
 
   useEffect(() => {
-    loadFolderList({ userId: 4 });
-    loadLinks({ userId: 4, folderId: selectedId });
+    loadLinks({ folderId: selectedId });
   }, [selectedId]);
 
-  useEffect(() => {}, [headerVisible]);
+  useEffect(() => {
+    loadFolderList();
+  }, []);
 
   return (
     <main>
-      {(folderListError || linksError) && (
-        <div>네트워크 오류입니다. 인터넷 연결상태를 확인하세요</div>
-      )}
-      <div style={{ backgroundColor: "red", height: "180px" }}>
+      <div style={{ height: "180px" }}>
         <FolderAddLinkArea
-          style={
-            !headerVisible && !footerVisible
-              ? {
-                  position: "fixed",
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  zIndex: 9999,
-                }
-              : {}
-          }
+          isFloating={!headerVisible && !footerVisible}
           folders={folders}
         />
       </div>
@@ -80,12 +65,8 @@ export function FolderMain() {
             결과입니다
           </p>
         )}
-        <FolderCategory
-          folders={folders}
-          selectedId={selectedId}
-          onSelectedFolder={handleSelectedFolder}
-        />
-        <FolderControl folderName={selectedName} />
+        <FolderCategory folders={folders} selectedId={selectedId} />
+        <FolderControl folderName={selectedName as string} />
 
         {!linksLoading ? (
           links?.length === 0 ? (

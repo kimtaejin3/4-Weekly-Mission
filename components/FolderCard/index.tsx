@@ -4,7 +4,7 @@ import noImg from "@/assets/noImg.png";
 import starImg from "@/assets/star.png";
 import kebabImg from "@/assets/kebab.png";
 import { useState } from "react";
-import { ModalPortal, PopOver, DeleteModal, AddLinkModal } from "@/components";
+import { PopOver, DeleteModal, AddLinkModal } from "@/components";
 import { useModal } from "@/hooks/useModal";
 import { Link, Folder } from "@/types";
 import Image from "next/image";
@@ -19,14 +19,6 @@ export function FolderCard({ link, folders }: Props) {
   const imageSource = "imageSource" in link ? "imageSource" : "image_source";
 
   const [openPopOver, setOpenPopOver] = useState(false);
-
-  const { openModal, modalRef, handleModalClose, handleModalOpen } = useModal();
-  const {
-    openModal: addOpenModal,
-    modalRef: addModalRef,
-    handleModalClose: addHandleModalClose,
-    handleModalOpen: addHandleModalOpen,
-  } = useModal();
 
   const handlePopOverClose = () => {
     setOpenPopOver(false);
@@ -43,24 +35,6 @@ export function FolderCard({ link, folders }: Props) {
 
   return (
     <>
-      <ModalPortal>
-        <DeleteModal
-          openModal={openModal}
-          ref={modalRef}
-          handleModalClose={handleModalClose}
-          title="링크 삭제"
-          description={link.url}
-        />
-      </ModalPortal>
-      <ModalPortal>
-        <AddLinkModal
-          openModal={addOpenModal}
-          ref={addModalRef}
-          handleModalClose={addHandleModalClose}
-          folders={folders}
-          linkUrl={link.url}
-        />
-      </ModalPortal>
       <a
         className={styles.container}
         href={link.url}
@@ -70,13 +44,14 @@ export function FolderCard({ link, folders }: Props) {
         <PopOver
           openPopOver={openPopOver}
           handlePopOverClose={handlePopOverClose}
-          onDeleteModalOpen={handleModalOpen}
-          onAddLinkModalOpen={addHandleModalOpen}
         />
         <div className={styles.link}>
           <div className={styles["link-cover"]}>
-            {/* <Image src={noImg} alt="cardCover" /> */}
-            <img src={link[imageSource]} alt="cardCover" />
+            {link[imageSource] ? (
+              <img src={link[imageSource]} alt="cardCover" />
+            ) : (
+              <Image src={noImg} alt="cardCover" />
+            )}
           </div>
           <button className={styles.likeBtn}>
             <Image src={starImg} alt="likeBtn" />
@@ -84,7 +59,7 @@ export function FolderCard({ link, folders }: Props) {
           <div className={styles["link-contents"]}>
             <div className={styles["link-header"]}>
               <p className={styles["link-update"]}>
-                {getTimeAgo(link[createdAt] as string)}
+                {getTimeAgo(link[createdAt])}
               </p>
               <button onClick={handleMoreBtn} className={styles.moreBtn}>
                 <Image id="moreBtn" src={kebabImg} alt="kebabImg" />
@@ -94,9 +69,7 @@ export function FolderCard({ link, folders }: Props) {
               {!link.title ? "제목없음" : link.title}
             </h2>
             <p className={styles["link-description"]}>{link.description}</p>
-            <p className={styles["link-date"]}>
-              {formatDate(link[createdAt] as string)}
-            </p>
+            <p className={styles["link-date"]}>{formatDate(link[createdAt])}</p>
           </div>
         </div>
       </a>

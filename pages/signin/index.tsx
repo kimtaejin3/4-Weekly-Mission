@@ -6,7 +6,7 @@ import HeaderLogo from "@/assets/header-logo.svg";
 import styles from "./styles.module.css";
 import { Input } from "@/components";
 import { FieldError, useForm } from "react-hook-form";
-import { postUserSignin } from "@/api/user";
+import { postUserSignin } from "@/api/auth";
 import { useRouter } from "next/router";
 import {
   EMAIL_ERROR_MESSAGE,
@@ -17,6 +17,8 @@ import {
   EMAIL_PLACEHOLDER,
   PASSWORD_PLACEHOLDER,
 } from "@/constants/placeholderMessage";
+import { useEffect } from "react";
+import { setCookie } from "@/utils/cookie";
 
 type FormType = {
   email: string;
@@ -44,12 +46,10 @@ export default function SignIn() {
         password: user.password,
       });
 
-      localStorage.setItem("accessToken", data.data.accessToken);
-      localStorage.setItem("refreshToken", data.data.refreshToken);
+      setCookie("accessToken", data.data.accessToken);
+      setCookie("refreshToken", data.data.refreshToken);
 
-      if (localStorage.getItem("accessToken")) {
-        router.push("/folder");
-      }
+      router.push("/folder");
     } catch (e) {
       setError("email", {
         type: "emailInValid",

@@ -1,62 +1,44 @@
 import { useModal } from "@/hooks/useModal";
 import styles from "./styles.module.css";
-import { AddModal, ModalPortal } from "@/components";
+import { AddModal } from "@/components";
 import { Folder } from "@/types";
+import Link from "next/link";
+import { Dispatch, SetStateAction } from "react";
 
 interface Props {
   folders: Folder[];
-  selectedId: number | null;
-  onSelectedFolder: ({ name, id }: { name: string; id: number }) => void;
+  selectedId: string | null;
 }
 
-export function FolderCategory({
-  folders,
-  selectedId,
-  onSelectedFolder,
-}: Props) {
-  const { openModal, modalRef, handleModalClose, handleModalOpen } = useModal();
-
-  const handleFolderSelectClick = (e: React.MouseEvent) => {
-    onSelectedFolder({
-      name: (e.target as HTMLElement).textContent as string,
-      id: (e.target as HTMLElement).id as unknown as number,
-    });
-  };
-
-  const handleFolderAddClick = (e: React.MouseEvent) => {
-    handleModalOpen();
-  };
+export function FolderCategory({ folders, selectedId }: Props) {
+  const handleFolderAddClick = (e: React.MouseEvent) => {};
 
   return (
     <>
-      <ModalPortal>
-        <AddModal
-          ref={modalRef}
-          openModal={openModal}
-          handleModalClose={handleModalClose}
-        />
-      </ModalPortal>
       <div className={styles.container}>
         <div className={styles.tags}>
-          <span
+          <Link
+            href={{
+              pathname: `/folder`,
+            }}
             className={`${styles.tag} ${!selectedId ? styles.selected : ""}`}
-            onClick={handleFolderSelectClick}
           >
             전체
-          </span>
+          </Link>
           {folders.map((folder) => (
-            <span
+            <Link
+              href={{
+                pathname: `${folder.id}`,
+                query: { name: folder.name },
+              }}
               className={`${styles.tag} ${
-                folder.id == (selectedId as unknown as string)
-                  ? styles.selected
-                  : ""
+                folder.id == selectedId ? styles.selected : ""
               }`}
               key={folder.id}
               id={folder.id}
-              onClick={handleFolderSelectClick}
             >
               {folder.name}
-            </span>
+            </Link>
           ))}
         </div>
         <span className={styles.folderAddBtn} onClick={handleFolderAddClick}>
