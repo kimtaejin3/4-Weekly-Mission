@@ -4,6 +4,7 @@ import { AddModal } from "@/components";
 import { Folder } from "@/types";
 import Link from "next/link";
 import { Dispatch, SetStateAction } from "react";
+import { useRouter } from "next/router";
 
 interface Props {
   folders: Folder[];

@@ -5,52 +5,39 @@ import { ModalContextProvider } from "@/context/modalContext";
 import { CardList, SearchInput } from "@/components";
 import { FolderAddLinkArea, FolderCategory, FolderControl } from "@/components";
 import styles from "./styles.module.css";
-import { useEffect, useState } from "react";
 import { getUserFolderList, getUserLinks } from "@/api/api";
 import { useSearch } from "@/hooks/useSearch";
-import { useAsync } from "@/hooks/useAsync";
 import { Folder, Link } from "@/types";
 import useIntersectionObserver from "@/hooks/useIntersectionObserver";
 import { useRouter } from "next/router";
+import { useQuery } from "@tanstack/react-query";
 
 export default function FolderPage() {
-  const [folders, setFolders] = useState([] as Folder[]);
+  const { isVisible: headerVisible, ref: headerBoundaryRef } =
+    useIntersectionObserver();
+  const { isVisible: footerVisible, ref: footerBoundaryRef } =
+    useIntersectionObserver();
+  const search = useSearch();
   const router = useRouter();
 
   const { id, name } = router.query;
-  const selectedId = (id && id[0]) || null;
   const selectedName = name || "전체";
+  const selectedId = (id && id[0]) || null;
 
-  const [links, setLinks] = useState([] as Link[]);
-  const [folderListLoading, folderListError, getFolderListAsync] =
-    useAsync(getUserFolderList);
-  const [linksLoading, linksError, getLinksAsync] = useAsync(getUserLinks);
-  const search = useSearch();
-  const { isVisible: headerVisible, ref: headerBoundaryRef } =
-    useIntersectionObserver();
+  const {
+    isLoading: folderListLoading,
+    error: folderListError,
+    data: folders,
+  } = useQuery({ queryKey: ["folders"], queryFn: getUserFolderList });
 
-  const { isVisible: footerVisible, ref: footerBoundaryRef } =
-    useIntersectionObserver();
-
-  const loadFolderList = async () => {
-    const folders = await getFolderListAsync();
-    if (!folders) return;
-    setFolders(folders.data.folder);
-  };
-
-  const loadLinks = async (option: { folderId: string | null }) => {
-    const links = await getLinksAsync(option);
-    if (!links) return;
-    setLinks(links.data.folder);
-  };
-
-  useEffect(() => {
-    loadLinks({ folderId: selectedId });
-  }, [selectedId]);
-
-  useEffect(() => {
-    loadFolderList();
-  }, []);
+  const {
+    isLoading: linksLoading,
+    error: linksError,
+    data: links,
+  } = useQuery({
+    queryKey: [`links-${selectedId}`],
+    queryFn: () => getUserLinks({ folderId: selectedId }),
+  });
 
   return (
     <ModalContextProvider>
@@ -59,7 +46,7 @@ export default function FolderPage() {
         <div style={{ height: "180px" }}>
           <FolderAddLinkArea
             isFloating={!headerVisible && !footerVisible}
-            folders={folders}
+            folders={folders as Folder[]}
           />
         </div>
         <div id="mainContainer" className={styles.mainContainer}>
@@ -71,14 +58,26 @@ export default function FolderPage() {
               결과입니다
             </p>
           )}
-          <FolderCategory folders={folders} selectedId={selectedId} />
+          {folderListLoading ? (
+            <div>로딩중입니다...</div>
+          ) : folderListError ? (
+            <div>폴더 정보들을 가져오는데 실패했습니다.</div>
+          ) : (
+            //folders를 잘 받아온게 확실
+            <FolderCategory
+              folders={folders as Folder[]}
+              selectedId={selectedId}
+            />
+          )}
           <FolderControl folderName={selectedName as string} />
 
           {!linksLoading ? (
             links?.length === 0 ? (
               <div className={styles.emptyArea}>저장된 링크가 없습니다</div>
             ) : (
-              <CardList links={links} folders={folders} />
+              <div style={{ paddingTop: "20px" }}>
+                <CardList links={links as Link[]} folders={folders} />
+              </div>
             )
           ) : (
             <div>로딩중</div>

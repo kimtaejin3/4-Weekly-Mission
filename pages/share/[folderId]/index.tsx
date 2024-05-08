@@ -4,7 +4,6 @@ import { SearchInput } from "@/components/SearchInput";
 import { getFolder, getLinks, getUser } from "@/api/share";
 import { useRouter } from "next/router";
 import { useQuery } from "@tanstack/react-query";
-import { User } from "@/types";
 
 export default function Share() {
   const router = useRouter();

@@ -4,9 +4,7 @@ import { instance } from "./axios";
 
 const BASE_URL = "https://bootcamp-api.codeit.kr/api";
 
-export async function getUserFolderList(): Promise<{
-  data: { folder: Folder[] };
-}> {
+export async function getUserFolderList(): Promise<Folder[]> {
   return (await instance.get("/folders")).data;
 }
 
@@ -14,7 +12,7 @@ export async function getUserLinks({
   folderId,
 }: {
   folderId: string | null;
-}): Promise<{ data: { folder: Link[] } }> {
+}): Promise<Link[]> {
   const query = folderId ? `?folderId=${folderId}` : "";
 
   return (await instance.get(`/links${query}`)).data;

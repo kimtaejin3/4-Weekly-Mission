@@ -9,7 +9,6 @@ import { getUser } from "@/api/user";
 import { useQuery } from "@tanstack/react-query";
 
 export function FolderHeader() {
-  const [user, setUser] = useState<User>({} as User);
   const { isLoading, error, data } = useQuery({
     queryKey: ["fh-user"],
     queryFn: getUser,
