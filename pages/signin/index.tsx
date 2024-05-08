@@ -31,6 +31,11 @@ export default function SignIn() {
   const mutation = useMutation({
     mutationFn: (user: FormType) =>
       postUserSignin({ email: user.email, password: user.password }),
+    onSuccess: (data) => {
+      setCookie("accessToken", data.accessToken);
+      setCookie("refreshToken", data.refreshToken);
+      router.push("/folder", undefined, { shallow: true });
+    },
   });
 
   const {
@@ -46,22 +51,18 @@ export default function SignIn() {
 
   const onSubmit = async (user: { email: string; password: string }) => {
     mutation.mutate({ email: user.email, password: user.password });
-
-    if (mutation.isSuccess) {
-      setCookie("accessToken", mutation.data.accessToken);
-      setCookie("refreshToken", mutation.data.refreshToken);
-      router.push("/folder", undefined, { shallow: true });
-    } else if (mutation.isError) {
-      setError("email", {
-        type: "emailInValid",
-        message: EMAIL_ERROR_MESSAGE.inValid,
-      });
-      setError("password", {
-        type: "passwordInValid",
-        message: PASSWORD_ERROR_MESSAGE.inValid,
-      });
-    }
   };
+
+  if (mutation.isError) {
+    setError("email", {
+      type: "emailInValid",
+      message: EMAIL_ERROR_MESSAGE.inValid,
+    });
+    setError("password", {
+      type: "passwordInValid",
+      message: PASSWORD_ERROR_MESSAGE.inValid,
+    });
+  }
 
   return (
     <div className={styles.rootContainer}>
