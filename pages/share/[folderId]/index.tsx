@@ -1,64 +1,52 @@
-import { Header, Footer, CardList, FolderHeader } from "../../../components";
+import { Footer, CardList, FolderHeader } from "../../../components";
 import styles from "./styles.module.css";
-import { useEffect, useState } from "react";
-import { useAsync } from "@/hooks/useAsync";
-import { FolderInfo, Link, User } from "@/types";
 import { SearchInput } from "@/components/SearchInput";
 import { getFolder, getLinks, getUser } from "@/api/share";
 import { useRouter } from "next/router";
+import { useQuery } from "@tanstack/react-query";
+import { User } from "@/types";
 
 export default function Share() {
-  const [folderLoading, folderError, getFolderAsync] = useAsync(getFolder);
-  const [userLoading, userError, getUserAsync] = useAsync(getUser);
-  const [linksLoading, linksError, getLinksAsync] = useAsync(getLinks);
-  const [folderName, setFolderName] = useState("");
-  const [userId, setUserId] = useState<number>();
-  const [user, setUser] = useState<User>();
-  const [links, setLinks] = useState<Link[]>();
   const router = useRouter();
+
   const { folderId } = router.query;
 
-  const handleLoadFolder = async (options: { folderId: string }) => {
-    const data = await getFolderAsync(options);
-    if (!data || data.data.length === 0) {
-      return;
-    }
-    setFolderName(data.data[0].name);
-    setUserId(data.data[0].user_id);
-  };
+  const { isLoading, error, data } = useQuery({
+    queryKey: ["s-folderInfo"],
+    queryFn: () => getFolder({ folderId: folderId as string }),
+    enabled: !!folderId,
+  });
 
-  const handleLoadUser = async (options: { userId: number }) => {
-    const data = await getUserAsync(options);
-    if (!data) {
-      return;
-    }
-    setUser(data.data[0]);
-  };
+  const {
+    isLoading: isUserLoading,
+    error: isUserError,
+    data: userData,
+  } = useQuery({
+    queryKey: ["s-user"],
+    queryFn: () => {
+      if (!data) return;
+      return getUser({ userId: data[0].user_id });
+    },
+    enabled: !!data,
+  });
 
-  const handleLoadLinks = async (options: {
-    userId: string;
-    folderId: string;
-  }) => {
-    const data = await getLinksAsync(options);
-    if (!data) {
-      return;
-    }
-    setLinks(data.data);
-  };
+  const {
+    isLoading: isLinksLoading,
+    error: isLinksError,
+    data: linksData,
+  } = useQuery({
+    queryKey: ["s-links"],
+    queryFn: () => {
+      if (!data) return;
+      return getLinks({
+        userId: data[0].user_id,
+        folderId: folderId as string,
+      });
+    },
+    enabled: !!folderId && !!data,
+  });
 
-  useEffect(() => {
-    if (!folderId) return;
-    handleLoadFolder({ folderId: folderId as string });
-  }, [folderId]);
-
-  useEffect(() => {
-    if (!userId) {
-      return;
-    }
-
-    handleLoadUser({ userId });
-    handleLoadLinks({ userId: String(userId), folderId: folderId as string });
-  }, [userId]);
+  console.log(data);
 
   return (
     <>
@@ -66,17 +54,27 @@ export default function Share() {
       <main>
         <div className={styles["main-headings"]}>
           <div className={styles["profile"]}>
-            {userLoading && <div>loading</div>}
-            <img
-              className={styles["profile-cover"]}
-              src={user?.image_source}
-              alt="profile"
-            />
-            <div className={styles["profile-author"]}>
-              @{user?.name || "It doesnt exist  "}
-            </div>
+            {isUserLoading ? (
+              "로딩중"
+            ) : (
+              <>
+                <img
+                  className={styles["profile-cover"]}
+                  src={userData && userData[0].image_source}
+                  alt="profile"
+                />
+                <div className={styles["profile-author"]}>
+                  @
+                  {(userData && userData[0].name) ||
+                    "존재하지 않는 사용자입니다"}
+                </div>
+              </>
+            )}
+
             <h2 className={styles["profile-title"]}>
-              {folderName || "존재하지 않는 폴더입니다"}
+              {isLoading
+                ? "로딩중..."
+                : (data && data[0].name) || "존재하지 않는 폴더입니다"}
             </h2>
           </div>
         </div>
@@ -84,9 +82,9 @@ export default function Share() {
         <div className={styles["wrapper"]}>
           <SearchInput />
 
-          {!linksLoading ? (
-            links ? (
-              <CardList links={links} />
+          {!isLinksLoading ? (
+            linksData ? (
+              <CardList links={linksData} />
             ) : (
               <div>링크 정보들이 없습니다.</div>
             )

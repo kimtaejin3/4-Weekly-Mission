@@ -6,28 +6,26 @@ import { User } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
 import { getUser } from "@/api/user";
+import { useQuery } from "@tanstack/react-query";
 
 export function FolderHeader() {
   const [user, setUser] = useState<User>({} as User);
-  const [loading, error, getUserAsync] = useAsync(getUser);
+  const { isLoading, error, data } = useQuery({
+    queryKey: ["fh-user"],
+    queryFn: getUser,
+    retry: false,
+  });
 
-  const handleLoadUser = async () => {
-    const userData = await getUserAsync();
-    setUser(userData.data[0]);
-  };
+  if (isLoading) {
+    return <>로딩중</>;
+  }
 
-  useEffect(() => {
-    handleLoadUser();
-  }, []);
-
-  if (loading) {
-    return <>로딩중이다</>;
+  if (error) {
+    console.log(error.message.includes("401"));
   }
 
   return (
     <header className={styles.header}>
-      {error && <div>네트워크 오류입니다. 인터넷 연결상태를 확인해주세요</div>}
-      {loading && <div>로딩중</div>}
       <div className={styles.headings}>
         <h1 className={styles["header-logo"]}>
           <Link href="/">
@@ -35,16 +33,16 @@ export function FolderHeader() {
           </Link>
         </h1>
 
-        {Object.keys(user).length > 0 ? (
+        {data ? (
           <>
             <div className={styles["headerProfile"]}>
               <img
                 className={styles.profileImg}
-                src={user.image_source}
+                src={data[0]?.image_source}
                 alt="profileImg"
               />
               <p className={styles.profileEmail} style={{ fontSize: "1.2rem" }}>
-                {user.email}
+                {data[0]?.email}
               </p>
             </div>
           </>

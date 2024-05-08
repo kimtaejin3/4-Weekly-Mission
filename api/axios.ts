@@ -2,8 +2,7 @@ import { getCookie } from "@/utils/cookie";
 import axios from "axios";
 
 export const instance = axios.create({
-  baseURL: "https://bootcamp-api.codeit.kr/api",
-  timeout: 1000,
+  baseURL: " https://bootcamp-api.codeit.kr/api/linkbrary/v1",
 });
 
 instance.interceptors.request.use(

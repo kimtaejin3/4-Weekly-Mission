@@ -49,7 +49,7 @@ export default function SignIn() {
       setCookie("accessToken", data.data.accessToken);
       setCookie("refreshToken", data.data.refreshToken);
 
-      router.push("/folder");
+      router.push("/folder", undefined, { shallow: true });
     } catch (e) {
       setError("email", {
         type: "emailInValid",
