@@ -1,4 +1,4 @@
-const BASE_URL = "https://bootcamp-api.codeit.kr/api";
+const BASE_URL = "https://bootcamp-api.codeit.kr/api/linkbrary/v1";
 
 export async function postUserSignin({
   email,
@@ -7,7 +7,7 @@ export async function postUserSignin({
   email: string;
   password: string;
 }) {
-  const response = await fetch(`${BASE_URL}/sign-in`, {
+  const response = await fetch(`${BASE_URL}/auth/sign-in`, {
     method: "POST",
     body: JSON.stringify({ email, password }),
     headers: {
@@ -30,7 +30,7 @@ export async function postUserSignUp({
   email: string;
   password: string;
 }) {
-  const response = await fetch(`${BASE_URL}/sign-up`, {
+  const response = await fetch(`${BASE_URL}/auth/sign-up`, {
     method: "POST",
     body: JSON.stringify({ email, password }),
     headers: {

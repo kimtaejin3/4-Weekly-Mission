@@ -19,6 +19,7 @@ import {
 } from "@/constants/placeholderMessage";
 import { useEffect } from "react";
 import { setCookie } from "@/utils/cookie";
+import { useMutation } from "@tanstack/react-query";
 
 type FormType = {
   email: string;
@@ -27,6 +28,10 @@ type FormType = {
 
 export default function SignIn() {
   const router = useRouter();
+  const mutation = useMutation({
+    mutationFn: (user: FormType) =>
+      postUserSignin({ email: user.email, password: user.password }),
+  });
 
   const {
     register,
@@ -40,17 +45,13 @@ export default function SignIn() {
   });
 
   const onSubmit = async (user: { email: string; password: string }) => {
-    try {
-      const data = await postUserSignin({
-        email: user.email,
-        password: user.password,
-      });
+    mutation.mutate({ email: user.email, password: user.password });
 
-      setCookie("accessToken", data.data.accessToken);
-      setCookie("refreshToken", data.data.refreshToken);
-
+    if (mutation.isSuccess) {
+      setCookie("accessToken", mutation.data.accessToken);
+      setCookie("refreshToken", mutation.data.refreshToken);
       router.push("/folder", undefined, { shallow: true });
-    } catch (e) {
+    } else if (mutation.isError) {
       setError("email", {
         type: "emailInValid",
         message: EMAIL_ERROR_MESSAGE.inValid,
