@@ -21,6 +21,8 @@ import {
   PASSWORD_PLACEHOLDER,
 } from "@/constants/placeholderMessage";
 import { useCallback, useEffect } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { setCookie } from "@/utils/cookie";
 
 type FormType = {
   email: string;
@@ -45,6 +47,19 @@ async function checkIsDuplicated(email: string) {
 
 export default function SignUp() {
   const router = useRouter();
+
+  const mutation = useMutation({
+    mutationFn: (user: Omit<FormType, "passwordConfirm">) =>
+      postUserSignUp({ email: user.email, password: user.password }),
+    onSuccess: (data) => {
+      setCookie("accessToken", data.accessToken);
+      setCookie("refreshToken", data.refreshToken);
+      router.push("/folder", undefined, { shallow: true });
+    },
+    onError: () => {
+      console.log("회원가입 실패");
+    },
+  });
 
   const {
     register,
@@ -91,20 +106,7 @@ export default function SignUp() {
   );
 
   const onSubmit = async (user: { email: string; password: string }) => {
-    try {
-      const data = await postUserSignUp({
-        email: user.email,
-        password: user.password,
-      });
-      localStorage.setItem("accessToken", data.data.accessToken);
-      localStorage.setItem("refreshToken", data.data.refreshToken);
-
-      if (localStorage.getItem("accessToken")) {
-        router.push("/folder");
-      }
-    } catch (e) {
-      console.error(e);
-    }
+    mutation.mutate({ email: user.email, password: user.password });
   };
 
   useEffect(() => {
