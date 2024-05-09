@@ -1,10 +1,8 @@
-import { useModal } from "@/hooks/useModal";
 import styles from "./styles.module.css";
-import { AddModal } from "@/components";
 import { Folder } from "@/types";
 import Link from "next/link";
-import { Dispatch, SetStateAction } from "react";
-import { useRouter } from "next/router";
+import { useContext } from "react";
+import { ModalDispatchContext } from "@/context/modalContext";
 
 interface Props {
   folders: Folder[];
@@ -12,7 +10,17 @@ interface Props {
 }
 
 export function FolderCategory({ folders, selectedId }: Props) {
-  const handleFolderAddClick = (e: React.MouseEvent) => {};
+  const dispatch = useContext(ModalDispatchContext)!;
+
+  const handleFolderAddClick = (e: React.MouseEvent) => {
+    dispatch({
+      type: "showModal",
+      payload: {
+        modalType: "AddModal",
+        data: null,
+      },
+    });
+  };
 
   return (
     <>

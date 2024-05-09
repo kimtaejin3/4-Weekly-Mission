@@ -2,8 +2,6 @@ import { Folder, FolderInfo, Link, User } from "@/types";
 import { getCookie } from "@/utils/cookie";
 import { instance } from "./axios";
 
-const BASE_URL = "https://bootcamp-api.codeit.kr/api";
-
 export async function getUserFolderList(): Promise<Folder[]> {
   return (await instance.get("/folders")).data;
 }
