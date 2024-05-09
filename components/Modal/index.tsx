@@ -29,7 +29,12 @@ const renderComponent = (modalData: ModalType): ReactNode => {
         />
       );
     case "ModifyModal":
-      return <ModifyModal folderName={modalData.data.folderName} />;
+      return (
+        <ModifyModal
+          folderId={modalData.data.folderId}
+          folderName={modalData.data.folderName}
+        />
+      );
     case "ShareModal":
       return <ShareModal folderName={modalData.data.folderName} />;
     default:

@@ -8,7 +8,13 @@ import { DeleteModal, ModifyModal, ShareModal } from "@/components";
 import { useContext } from "react";
 import { ModalDispatchContext } from "@/context/modalContext";
 
-export function FolderControl({ folderName }: { folderName: string }) {
+export function FolderControl({
+  folderName,
+  folderId,
+}: {
+  folderName: string;
+  folderId: string;
+}) {
   const dispatch = useContext(ModalDispatchContext)!;
 
   const handleDeleteClick = () => {
@@ -21,7 +27,15 @@ export function FolderControl({ folderName }: { folderName: string }) {
     });
   };
 
-  const handleModifyClick = () => {};
+  const handleModifyClick = () => {
+    dispatch({
+      type: "showModal",
+      payload: {
+        modalType: "ModifyModal",
+        data: { folderName, folderId },
+      },
+    });
+  };
 
   const handleShareClick = () => {};
 

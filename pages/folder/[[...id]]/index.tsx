@@ -69,7 +69,10 @@ export default function FolderPage() {
               selectedId={selectedId}
             />
           )}
-          <FolderControl folderName={selectedName as string} />
+          <FolderControl
+            folderId={selectedId as string}
+            folderName={selectedName as string}
+          />
 
           {!linksLoading ? (
             links?.length === 0 ? (

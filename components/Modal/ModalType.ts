@@ -25,6 +25,7 @@ export type ModifyModalType = {
   modalType: "ModifyModal";
   data: {
     folderName: string;
+    folderId: string;
   };
 };
 
