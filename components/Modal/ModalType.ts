@@ -16,6 +16,7 @@ export type AddModalType = {
 export type DeleteModalType = {
   modalType: "DeleteModal";
   data: {
+    folderId: string;
     title: string;
     description: string;
   };

@@ -22,7 +22,7 @@ export function FolderControl({
       type: "showModal",
       payload: {
         modalType: "DeleteModal",
-        data: { title: "링크 삭제", description: folderName },
+        data: { title: "링크 삭제", description: folderName, folderId },
       },
     });
   };

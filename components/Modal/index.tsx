@@ -24,6 +24,7 @@ const renderComponent = (modalData: ModalType): ReactNode => {
     case "DeleteModal":
       return (
         <DeleteModal
+          folderId={modalData.data.folderId}
           title={modalData.data.title}
           description={modalData.data.description}
         />
