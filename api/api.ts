@@ -11,7 +11,9 @@ export async function getUserLinks({
 }: {
   folderId: string | null;
 }): Promise<Link[]> {
-  // const query = folderId ? `?folderId=${folderId}` : "";
+  if (!folderId) {
+    return (await instance.get(`/links`)).data;
+  }
 
   return (await instance.get(`/folders/${folderId}/links`)).data;
 }

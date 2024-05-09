@@ -30,7 +30,7 @@ export const AddLinkModal = ({ folderId, folders, linkUrl }: Props) => {
   };
 
   const handleAddLinks = () => {
-    mutation.mutate({ url: linkUrl.trim(), folderId: Number(folderId) });
+    mutation.mutate({ url: linkUrl.trim(), folderId: Number(selectedId) });
   };
 
   return (
