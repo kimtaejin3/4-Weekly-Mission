@@ -16,7 +16,6 @@ import { FolderCard } from "./FolderCard";
 import { FolderCategory } from "./FolderCategory";
 import { FolderControl } from "./FolderControl";
 import { FolderHeader } from "./FolderHeader";
-import { FolderMain } from "./FolderMain";
 
 export {
   Header,
@@ -37,5 +36,4 @@ export {
   FolderCategory,
   FolderControl,
   FolderHeader,
-  FolderMain,
 };
