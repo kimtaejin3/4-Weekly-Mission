@@ -8,15 +8,19 @@ import { ModalDispatchContext } from "@/context/modalContext";
 interface Props {
   folders: Folder[];
   isFloating: boolean;
+  folderId: string;
 }
 
-export function FolderAddLinkArea({ folders, isFloating }: Props) {
+export function FolderAddLinkArea({ folderId, folders, isFloating }: Props) {
   const [linkUrl, setLinkUrl] = useState("");
   const dispatch = useContext(ModalDispatchContext)!;
   const handleAddLinkClick = () => {
     dispatch({
       type: "showModal",
-      payload: { modalType: "AddLinkModal", data: { folders, linkUrl } },
+      payload: {
+        modalType: "AddLinkModal",
+        data: { folderId, folders, linkUrl },
+      },
     });
   };
 

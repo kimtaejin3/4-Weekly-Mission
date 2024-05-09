@@ -47,6 +47,7 @@ export default function FolderPage() {
           <FolderAddLinkArea
             isFloating={!headerVisible && !footerVisible}
             folders={folders as Folder[]}
+            folderId={selectedId as string}
           />
         </div>
         <div id="mainContainer" className={styles.mainContainer}>

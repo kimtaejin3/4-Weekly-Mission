@@ -15,6 +15,7 @@ const renderComponent = (modalData: ModalType): ReactNode => {
     case "AddLinkModal":
       return (
         <AddLinkModal
+          folderId={modalData.data.folderId}
           folders={modalData.data.folders}
           linkUrl={modalData.data.linkUrl}
         />

@@ -3,6 +3,7 @@ import { Folder } from "@/types";
 export type AddLinkModalType = {
   modalType: "AddLinkModal";
   data: {
+    folderId: string;
     folders: Folder[];
     linkUrl: string;
   };

@@ -23,9 +23,7 @@ export interface Folder {
   created_at: string;
   favorite: boolean;
   name: string;
-  link: {
-    count: number;
-  };
+  link_count: number;
   user_id: number;
 }
 
