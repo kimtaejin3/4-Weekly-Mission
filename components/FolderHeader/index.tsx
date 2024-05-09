@@ -19,10 +19,6 @@ export function FolderHeader() {
     return <>로딩중</>;
   }
 
-  if (error) {
-    console.log(error.message.includes("401"));
-  }
-
   return (
     <header className={styles.header}>
       <div className={styles.headings}>

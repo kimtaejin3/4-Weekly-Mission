@@ -45,8 +45,6 @@ export default function Share() {
     enabled: !!folderId && !!data,
   });
 
-  console.log(data);
-
   return (
     <>
       <FolderHeader />
