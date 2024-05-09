@@ -44,6 +44,8 @@ export function FolderCard({ link, folders }: Props) {
         <PopOver
           openPopOver={openPopOver}
           handlePopOverClose={handlePopOverClose}
+          linkUrl={link.url}
+          linkId={Number(link.id)}
         />
         <div className={styles.link}>
           <div className={styles["link-cover"]}>

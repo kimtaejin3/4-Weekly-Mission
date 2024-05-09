@@ -1,4 +1,5 @@
 import { Folder } from "@/types";
+import { DeleteLinkModal } from "../DeleteLinkModal";
 
 export type AddLinkModalType = {
   modalType: "AddLinkModal";
@@ -23,6 +24,14 @@ export type DeleteModalType = {
   };
 };
 
+export type DeleteLinkModalType = {
+  modalType: "DeleteLinkModal";
+  data: {
+    linkId: number;
+    linkUrl: string;
+  };
+};
+
 export type ModifyModalType = {
   modalType: "ModifyModal";
   data: {
@@ -43,7 +52,8 @@ export type PayloadType =
   | AddModalType
   | DeleteModalType
   | ModifyModalType
-  | ShareModalType;
+  | ShareModalType
+  | DeleteLinkModalType;
 
 export type ActionType =
   | { type: "showModal"; payload: PayloadType }

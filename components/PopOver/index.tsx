@@ -1,19 +1,35 @@
+import { ModalDispatchContext } from "@/context/modalContext";
 import useHandleOutsideClick from "../../hooks/useHandleOutsideClick";
 import styles from "./styles.module.css";
-import { useRef } from "react";
+import { useContext, useRef } from "react";
 
 interface Props {
   openPopOver: boolean;
   handlePopOverClose: () => void;
+  linkUrl: string;
+  linkId: number;
 }
 
-export function PopOver({ openPopOver, handlePopOverClose }: Props) {
+export function PopOver({
+  linkId,
+  linkUrl,
+  openPopOver,
+  handlePopOverClose,
+}: Props) {
   const ref = useRef<HTMLDivElement>(null);
+  const dispatch = useContext(ModalDispatchContext)!;
 
   useHandleOutsideClick(ref, handlePopOverClose);
 
   const handleLinkDeleteClick = (e: React.MouseEvent) => {
     e.preventDefault();
+    dispatch({
+      type: "showModal",
+      payload: {
+        modalType: "DeleteLinkModal",
+        data: { linkUrl, linkId },
+      },
+    });
     handlePopOverClose();
   };
 

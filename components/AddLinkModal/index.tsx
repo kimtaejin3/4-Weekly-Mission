@@ -2,7 +2,7 @@ import { useState } from "react";
 import styles from "./styles.module.css";
 import { Folder } from "../../types";
 import { QueryClient, useMutation } from "@tanstack/react-query";
-import { addLinks } from "@/api/links";
+import { addLink } from "@/api/links";
 
 interface Props {
   folderId: string;
@@ -15,7 +15,7 @@ export const AddLinkModal = ({ folderId, folders, linkUrl }: Props) => {
   const queryClient = new QueryClient();
   const mutation = useMutation({
     mutationFn: (folder: { url: string; folderId: number }) =>
-      addLinks(folder.url, folder.folderId),
+      addLink(folder.url, folder.folderId),
     onError: () => {
       alert("링크 추가에 실패하였습니다.");
     },

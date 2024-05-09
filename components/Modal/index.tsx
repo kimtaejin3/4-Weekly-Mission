@@ -9,6 +9,7 @@ import { ModifyModal } from "../ModifyModal";
 import { ShareModal } from "../ShareModal";
 import { ModalDispatchContext, ModalContext } from "@/context/modalContext";
 import { AddLinkModalType, AddModalType, ModalType } from "./ModalType";
+import { DeleteLinkModal } from "../DeleteLinkModal";
 
 const renderComponent = (modalData: ModalType): ReactNode => {
   switch (modalData.type) {
@@ -28,6 +29,13 @@ const renderComponent = (modalData: ModalType): ReactNode => {
           folderId={modalData.data.folderId}
           title={modalData.data.title}
           description={modalData.data.description}
+        />
+      );
+    case "DeleteLinkModal":
+      return (
+        <DeleteLinkModal
+          linkId={modalData.data.linkId}
+          linkUrl={modalData.data.linkUrl}
         />
       );
     case "ModifyModal":
